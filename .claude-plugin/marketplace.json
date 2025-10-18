@@ -1,8 +1,8 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "rknall-custom-skills",
-  "version": "2.0.0",
-  "description": "Custom Claude Code skills marketplace for advanced development workflows with architecture review and accessibility expertise",
+  "version": "3.0.0",
+  "description": "Custom Claude Code skills marketplace for architecture review, accessibility expertise, and creative design generation",
   "owner": {
     "name": "rknall"
   },
@@ -20,6 +20,20 @@
       "description": "Comprehensive UI/UX design review for websites and desktop applications with extensive WCAG 2.1/2.2 accessibility analysis, usability evaluation, and visual design assessment",
       "version": "1.0.0",
       "category": "development"
+    },
+    {
+      "name": "web-design-builder",
+      "source": "./web-design-builder",
+      "description": "Create professional HTML5/JavaScript web designs from specifications with automatic Playwright MCP verification for accessibility and functionality testing",
+      "version": "1.0.0",
+      "category": "design"
+    },
+    {
+      "name": "svg-logo-designer",
+      "source": "./svg-logo-designer",
+      "description": "Generate professional SVG logos with multiple concepts, layouts, and variations. Creates scalable vector graphics with comprehensive usage guidelines",
+      "version": "1.0.0",
+      "category": "design"
     }
   ]
 }

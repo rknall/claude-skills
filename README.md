@@ -102,6 +102,74 @@ A production-ready skill that provides expert-level design reviews covering:
 
 [View Full Documentation](./ui-design-review/README.md)
 
+### 3. Web Design Builder
+
+**Version:** 1.0.0
+**Category:** Design
+**Description:** Create professional HTML5/JavaScript web designs with Playwright verification
+
+A production-ready skill that generates complete, accessible web designs from specifications:
+- **Design Generation**: HTML5, CSS3, JavaScript for any web interface
+- **Playwright Integration**: Automatic verification when MCP is available
+- **Accessibility Testing**: WCAG 2.1 Level AA compliance checking
+- **Visual Verification**: Screenshots at mobile, tablet, desktop breakpoints
+- **Functionality Testing**: Forms, interactions, JavaScript validation
+- **Performance Analysis**: Load time, resource optimization
+- **Framework Support**: Vanilla, Tailwind CSS, React, Vue, Alpine.js
+
+**Key Features:**
+- Automatic Playwright MCP detection and graceful fallback
+- Responsive, mobile-first designs
+- Complete accessibility compliance (WCAG AA)
+- Interactive component testing
+- Performance metrics and optimization
+- Design templates for common patterns
+- Comprehensive verification reports
+
+**When to Use:**
+- Create landing pages or web applications
+- Build responsive web interfaces
+- Generate design mockups
+- Refactor existing HTML/CSS/JS
+- Create accessible WCAG-compliant designs
+- Build component libraries
+
+[View Full Documentation](./web-design-builder/README.md)
+
+### 4. SVG Logo Designer
+
+**Version:** 1.0.0
+**Category:** Design
+**Description:** Generate professional SVG logos with multiple variations
+
+A production-ready skill that creates scalable vector graphic logos:
+- **Multiple Concepts**: 3-5 different design directions per request
+- **Layout Variations**: Horizontal, vertical, square, icon-only, text-only
+- **Logo Types**: Wordmarks, lettermarks, pictorial, abstract, combination, emblems
+- **Color Variations**: Full color, monochrome dark/light, reversed
+- **Professional SVG**: Clean, optimized, accessible code
+- **Usage Guidelines**: Complete brand identity documentation
+- **Export Instructions**: SVG to PNG conversion guidance
+
+**Key Features:**
+- Multiple logo concepts exploring different visual approaches
+- Comprehensive layout options for all use cases
+- Color psychology guidance and palette selection
+- Scalable vector graphics work at any size
+- Accessibility with title/desc elements
+- Complete usage documentation
+- File organization and naming conventions
+
+**When to Use:**
+- Create brand logos or visual identities
+- Design icons or symbols
+- Generate logo variations and concepts
+- Produce scalable graphics for branding
+- Create wordmarks or lettermarks
+- Design for both digital and print applications
+
+[View Full Documentation](./svg-logo-designer/README.md)
+
 ## Repository Structure
 
 ```
@@ -120,6 +188,13 @@ Skills/
 │   ├── wcag-checklist.md              # WCAG 2.1/2.2 compliance checklist
 │   ├── design-patterns-library.md     # Accessible component patterns
 │   └── testing-resources.md           # Testing tools and methods
+├── web-design-builder/                # Web Design Builder Skill
+│   ├── SKILL.md                       # Main skill definition
+│   ├── README.md                      # Skill documentation
+│   └── design-templates.md            # Ready-to-use templates
+├── svg-logo-designer/                 # SVG Logo Designer Skill
+│   ├── SKILL.md                       # Main skill definition
+│   └── README.md                      # Skill documentation
 └── README.md                          # This file
 ```
 
@@ -241,6 +316,20 @@ Users install it with a single command:
 ```
 
 ## Version History
+
+### 3.0.0 (2025-10-18)
+- Added Web Design Builder skill v1.0.0
+  - HTML5/JavaScript design generation
+  - Playwright MCP integration for automatic verification
+  - Accessibility, visual, and functionality testing
+  - Multiple framework support (Vanilla, Tailwind, React, Vue, Alpine.js)
+  - Design templates for common patterns
+- Added SVG Logo Designer skill v1.0.0
+  - Professional logo generation with multiple concepts
+  - Layout variations (horizontal, vertical, square, icon, text)
+  - All major logo types supported
+  - Color psychology guidance
+  - Complete usage guidelines
 
 ### 2.0.0 (2025-10-18)
 - Added UI/UX Design Review skill v1.0.0
