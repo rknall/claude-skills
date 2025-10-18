@@ -1,8 +1,8 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "rknall-custom-skills",
-  "version": "1.0.0",
-  "description": "Custom Claude Code skills marketplace for advanced development workflows",
+  "version": "2.0.0",
+  "description": "Custom Claude Code skills marketplace for advanced development workflows with architecture review and accessibility expertise",
   "owner": {
     "name": "rknall"
   },
@@ -11,6 +11,13 @@
       "name": "python-architecture-review",
       "source": "./python-architecture-review",
       "description": "Comprehensive design architecture review for Python backend applications, analyzing scalability, security, performance, and best practices",
+      "version": "1.0.0",
+      "category": "development"
+    },
+    {
+      "name": "ui-design-review",
+      "source": "./ui-design-review",
+      "description": "Comprehensive UI/UX design review for websites and desktop applications with extensive WCAG 2.1/2.2 accessibility analysis, usability evaluation, and visual design assessment",
       "version": "1.0.0",
       "category": "development"
     }

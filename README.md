@@ -33,7 +33,7 @@ Or install all skills from this marketplace at once through the plugin menu.
 
 ## Available Skills
 
-### Python Backend Architecture Review
+### 1. Python Backend Architecture Review
 
 **Version:** 1.0.0
 **Category:** Development
@@ -67,19 +67,60 @@ A production-ready skill that provides expert-level architecture reviews coverin
 
 [View Full Documentation](./python-architecture-review/README.md)
 
+### 2. UI/UX Design Review
+
+**Version:** 1.0.0
+**Category:** Development
+**Description:** Comprehensive UI/UX design review with extensive accessibility analysis
+
+A production-ready skill that provides expert-level design reviews covering:
+- **Accessibility**: Complete WCAG 2.1/2.2 compliance checking (Level A, AA, AAA)
+- **Visual Design**: Layout, typography, color theory, hierarchy, consistency
+- **User Experience**: Usability heuristics, user flows, interaction patterns
+- **Responsive Design**: Mobile-first approach, breakpoint strategy, adaptation
+- **Components**: Button states, forms, modals, navigation, error handling
+- **Desktop Applications**: Platform-specific patterns for Windows, macOS, Linux
+
+**Key Features:**
+- Comprehensive WCAG 2.1/2.2 compliance checklist
+- Accessible component pattern library with code examples
+- Testing tools and methodologies guide
+- Platform-specific guidelines (Web, Windows, macOS, Linux)
+- Color contrast analysis and recommendations
+- Screen reader compatibility testing
+- Keyboard navigation evaluation
+- Prioritized recommendations (Critical → Low)
+
+**When to Use:**
+- Accessibility audits (WCAG compliance)
+- Design system reviews
+- Website/app usability evaluation
+- Responsive design assessment
+- Component library reviews
+- Desktop application UI reviews
+- Color palette and contrast verification
+
+[View Full Documentation](./ui-design-review/README.md)
+
 ## Repository Structure
 
 ```
 Skills/
 ├── .claude-plugin/
-│   └── marketplace.json          # Marketplace configuration
-├── python-architecture-review/    # Python Backend Architecture Review Skill
-│   ├── SKILL.md                  # Main skill definition
-│   ├── README.md                 # Skill documentation
-│   ├── architecture-checklist.md # Complete review checklist
-│   ├── common-patterns.md        # Reference implementations
-│   └── technology-recommendations.md # Tech stack guide
-└── README.md                     # This file
+│   └── marketplace.json               # Marketplace configuration
+├── python-architecture-review/         # Python Backend Architecture Review Skill
+│   ├── SKILL.md                       # Main skill definition
+│   ├── README.md                      # Skill documentation
+│   ├── architecture-checklist.md      # Complete review checklist
+│   ├── common-patterns.md             # Reference implementations
+│   └── technology-recommendations.md  # Tech stack guide
+├── ui-design-review/                  # UI/UX Design Review Skill
+│   ├── SKILL.md                       # Main skill definition
+│   ├── README.md                      # Skill documentation
+│   ├── wcag-checklist.md              # WCAG 2.1/2.2 compliance checklist
+│   ├── design-patterns-library.md     # Accessible component patterns
+│   └── testing-resources.md           # Testing tools and methods
+└── README.md                          # This file
 ```
 
 ## Creating Your Own Skills
@@ -201,6 +242,13 @@ Users install it with a single command:
 
 ## Version History
 
+### 2.0.0 (2025-10-18)
+- Added UI/UX Design Review skill v1.0.0
+  - Comprehensive WCAG 2.1/2.2 compliance framework
+  - Accessible component pattern library
+  - Visual design and UX evaluation
+  - Testing tools and resources guide
+
 ### 1.0.0 (2025-10-18)
 - Initial marketplace setup
 - Python Backend Architecture Review skill v1.0.0
@@ -224,11 +272,13 @@ To add or improve skills in this marketplace:
 Planned skills for future releases:
 - Frontend Architecture Review (React/Vue/Angular)
 - Infrastructure as Code Review (Terraform/CloudFormation)
-- Security Audit Skill
-- Performance Optimization Skill
+- Security Audit Skill (penetration testing, threat modeling)
+- Performance Optimization Skill (profiling, benchmarking)
 - Database Schema Review Skill
-- API Design Review Skill
+- API Design Review Skill (REST, GraphQL, gRPC)
 - Microservices Architecture Skill
+- Code Quality Review Skill (refactoring, technical debt)
+- Documentation Review Skill (technical writing, API docs)
 
 ## Support
 
