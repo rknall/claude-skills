@@ -102,7 +102,42 @@ A production-ready skill that provides expert-level design reviews covering:
 
 [View Full Documentation](./ui-design-review/README.md)
 
-### 3. Web Design Builder
+### 3. Docker Configuration Validator
+
+**Version:** 1.0.0
+**Category:** Development
+**Description:** Comprehensive Docker and Docker Compose validation following best practices and security standards
+
+A production-ready skill that provides expert-level Docker configuration validation:
+- **Dockerfile Validation**: Syntax, multi-stage builds, security, best practices
+- **Docker Compose Validation**: Modern syntax (no obsolete version field), service configuration
+- **Security Audit**: Non-root users, exposed secrets, vulnerable base images
+- **Multi-Stage Build Verification**: Proper stage implementation and optimization
+- **Automation**: Generates validation scripts, CI/CD integrations, pre-commit hooks
+- **Comprehensive Reporting**: Detailed issues with fixes, prioritized by severity
+
+**Key Features:**
+- Hadolint integration for deep Dockerfile analysis
+- DCLint integration for Compose file linting
+- Modern Compose syntax enforcement (v2.27.0+)
+- Multi-stage build pattern validation
+- Security vulnerability identification
+- Automated validation script generation
+- GitHub Actions and GitLab CI templates
+- Complete validation checklists
+
+**When to Use:**
+- Validate Dockerfiles before deployment
+- Audit Docker security and compliance
+- Modernize Docker Compose files
+- Review production readiness
+- Create automated validation workflows
+- Set up CI/CD pipeline validation
+- Fix Docker configuration issues
+
+[View Full Documentation](./docker-validation/README.md)
+
+### 4. Web Design Builder
 
 **Version:** 1.0.0
 **Category:** Design
@@ -136,7 +171,7 @@ A production-ready skill that generates complete, accessible web designs from sp
 
 [View Full Documentation](./web-design-builder/README.md)
 
-### 4. SVG Logo Designer
+### 5. SVG Logo Designer
 
 **Version:** 1.0.0
 **Category:** Design
@@ -188,6 +223,11 @@ Skills/
 │   ├── wcag-checklist.md              # WCAG 2.1/2.2 compliance checklist
 │   ├── design-patterns-library.md     # Accessible component patterns
 │   └── testing-resources.md           # Testing tools and methods
+├── docker-validation/                 # Docker Configuration Validator Skill
+│   ├── SKILL.md                       # Main skill definition
+│   ├── README.md                      # Skill documentation
+│   ├── validation-checklist.md        # Complete validation checklist
+│   └── tool-installation.md           # Tool setup guide
 ├── web-design-builder/                # Web Design Builder Skill
 │   ├── SKILL.md                       # Main skill definition
 │   ├── README.md                      # Skill documentation
@@ -317,6 +357,17 @@ Users install it with a single command:
 
 ## Version History
 
+### 4.0.0 (2025-10-18)
+- Added Docker Configuration Validator skill v1.0.0
+  - Comprehensive Dockerfile and Docker Compose validation
+  - Modern Compose syntax enforcement (no obsolete version field)
+  - Multi-stage build verification
+  - Security audit capabilities
+  - Hadolint and DCLint integration
+  - Automated validation script generation
+  - CI/CD integration templates (GitHub Actions, GitLab CI)
+  - Complete validation checklists and tool installation guides
+
 ### 3.0.0 (2025-10-18)
 - Added Web Design Builder skill v1.0.0
   - HTML5/JavaScript design generation
@@ -361,6 +412,7 @@ To add or improve skills in this marketplace:
 Planned skills for future releases:
 - Frontend Architecture Review (React/Vue/Angular)
 - Infrastructure as Code Review (Terraform/CloudFormation)
+- Kubernetes Configuration Validator (manifest validation, best practices)
 - Security Audit Skill (penetration testing, threat modeling)
 - Performance Optimization Skill (profiling, benchmarking)
 - Database Schema Review Skill
@@ -387,6 +439,6 @@ These skills are provided as-is for use with Claude Code. Individual skills may 
 
 ---
 
-**Marketplace Version:** 1.0.0
+**Marketplace Version:** 4.0.0
 **Last Updated:** 2025-10-18
 **Maintainer:** rknall

@@ -1,8 +1,8 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "rknall-custom-skills",
-  "version": "3.0.0",
-  "description": "Custom Claude Code skills marketplace for architecture review, accessibility expertise, and creative design generation",
+  "version": "4.0.0",
+  "description": "Custom Claude Code skills marketplace for architecture review, accessibility expertise, creative design generation, and DevOps validation",
   "owner": {
     "name": "rknall"
   },
@@ -18,6 +18,13 @@
       "name": "ui-design-review",
       "source": "./ui-design-review",
       "description": "Comprehensive UI/UX design review for websites and desktop applications with extensive WCAG 2.1/2.2 accessibility analysis, usability evaluation, and visual design assessment",
+      "version": "1.0.0",
+      "category": "development"
+    },
+    {
+      "name": "docker-validation",
+      "source": "./docker-validation",
+      "description": "Comprehensive Docker and Docker Compose validation following best practices and security standards. Validates Dockerfiles, multi-stage builds, modern Compose syntax, and generates automation scripts",
       "version": "1.0.0",
       "category": "development"
     },
