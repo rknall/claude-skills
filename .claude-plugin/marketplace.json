@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "rknall-custom-skills",
+  "version": "1.0.0",
+  "description": "Custom Claude Code skills marketplace for advanced development workflows",
+  "owner": {
+    "name": "rknall"
+  },
+  "plugins": [
+    {
+      "name": "python-architecture-review",
+      "source": "./python-architecture-review",
+      "description": "Comprehensive design architecture review for Python backend applications, analyzing scalability, security, performance, and best practices",
+      "version": "1.0.0",
+      "category": "development"
+    }
+  ]
+}
