@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "rknall-custom-skills",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Custom Claude Code skills marketplace for architecture review, accessibility expertise, creative design generation, and DevOps validation",
   "owner": {
     "name": "rknall"
@@ -46,6 +46,13 @@
       "name": "stack-validator",
       "source": "./stack-validator",
       "description": "Validates GitLab stack projects before deployment, ensuring proper architecture patterns, directory structure, secrets management, .env configuration, and Docker best practices. Detects issues and provides actionable guidance",
+      "version": "1.0.0",
+      "category": "development"
+    },
+    {
+      "name": "secrets-manager",
+      "source": "./secrets-manager",
+      "description": "Manages Docker secrets for GitLab stack projects, ensuring secrets are never in .env or docker-compose.yml. Handles migration from environment variables, validation, auditing, and secure secret generation",
       "version": "1.0.0",
       "category": "development"
     }

@@ -244,6 +244,41 @@ A production-ready skill that validates stack project configurations:
 
 [View Full Documentation](./stack-validator/README.md)
 
+### 7. GitLab Stack Secrets Manager
+
+**Version:** 1.0.0
+**Category:** Development
+**Description:** Secure Docker secrets management - ensures secrets never in .env or docker-compose.yml
+
+A production-ready skill that manages Docker secrets securely:
+- **Secret Migration**: Moves secrets from .env and docker-compose.yml to Docker secrets
+- **Secret Creation**: Generates secure random secrets with proper permissions
+- **Validation**: Detects secrets in wrong locations (critical security issue)
+- **Auditing**: Find leaks, unused secrets, permission issues
+- **Git Protection**: Ensures secrets never committed to version control
+- **docker-entrypoint.sh**: Generates entrypoint scripts when containers lack native support
+
+**Key Features:**
+- Critical security focus: NO secrets in .env or docker-compose.yml environment
+- Automatic migration from insecure locations
+- Secure random secret generation (alphanumeric, hex, base64, UUID)
+- Comprehensive leak detection across .env, compose, config files, git history
+- File permission management (700/600)
+- Integration with stack-validator for security checks
+- Works with stack-creator for proper initialization
+
+**When to Use:**
+- Fix "secrets in .env" security issues
+- Migrate environment variables to Docker secrets
+- Create new secure secrets
+- Validate secret configuration
+- Audit secret usage and detect leaks
+- Generate docker-entrypoint.sh for legacy containers
+- Rotate existing secrets
+- Ensure secrets not in git
+
+[View Full Documentation](./secrets-manager/README.md)
+
 ## Repository Structure
 
 ```
@@ -279,6 +314,11 @@ Skills/
 │   ├── README.md                      # Skill documentation
 │   ├── validation-patterns.md         # Architecture patterns and examples
 │   └── common-issues.md               # Issue reference guide
+├── secrets-manager/                   # GitLab Stack Secrets Manager Skill
+│   ├── SKILL.md                       # Main skill definition
+│   ├── README.md                      # Skill documentation
+│   ├── secrets-patterns.md            # Security patterns and best practices
+│   └── migration-guide.md             # Step-by-step migration scenarios
 └── README.md                          # This file
 ```
 
@@ -401,6 +441,19 @@ Users install it with a single command:
 
 ## Version History
 
+### 0.6.1 (2025-10-20)
+- Added GitLab Stack Secrets Manager skill v1.0.0
+  - Secure Docker secrets management for GitLab stack projects
+  - Critical focus: ensures secrets NEVER in .env or docker-compose.yml
+  - Automatic migration from insecure locations
+  - Secret creation with secure random generation (alphanumeric, hex, base64, UUID)
+  - Comprehensive validation and leak detection
+  - docker-entrypoint.sh generation for legacy containers
+  - File permission management (700/600)
+  - Git protection and history scanning
+  - Integration with stack-validator for security checks
+  - Complete migration guide with step-by-step scenarios
+
 ### 0.6.0 (2025-10-20)
 - Added GitLab Stack Validator skill v1.0.0
   - Comprehensive stack project validation before deployment
@@ -494,6 +547,6 @@ These skills are provided as-is for use with Claude Code. Individual skills may 
 
 ---
 
-**Marketplace Version:** 0.6.0
+**Marketplace Version:** 0.6.1
 **Last Updated:** 2025-10-20
 **Maintainer:** rknall
