@@ -205,6 +205,45 @@ A production-ready skill that creates scalable vector graphic logos:
 
 [View Full Documentation](./svg-logo-designer/README.md)
 
+### 6. GitLab Stack Validator
+
+**Version:** 1.0.0
+**Category:** Development
+**Description:** Validates GitLab stack projects before deployment with comprehensive checks
+
+A production-ready skill that validates stack project configurations:
+- **Directory Structure**: Required directories (./config, ./secrets, ./_temporary), permissions, .gitignore
+- **Environment Variables**: .env and .env.example synchronization (critical requirement)
+- **Docker Configuration**: Uses docker-validation skill for compose and Dockerfile checks
+- **Secrets Management**: Docker secrets validation, permission checks, exposure detection
+- **Configuration Files**: Syntax validation, proper organization, no embedded secrets
+- **File Ownership**: Detects root-owned files, ensures proper permissions
+- **Scripts**: docker-entrypoint.sh validation when necessary
+- **Temporary Files**: ./_temporary directory usage and cleanup validation
+
+**Key Features:**
+- Critical .env/.env.example synchronization checking
+- Integrates with docker-validation skill for Docker-specific validation
+- Comprehensive security scanning for exposed secrets
+- File ownership auditing (no root-owned files)
+- Detailed, actionable validation reports
+- Multiple output formats (text, JSON)
+- Strict and permissive validation modes
+- Custom validation rules support
+- Works with companion skills (stack-creator, secrets-manager)
+
+**When to Use:**
+- Validate stack before deployment
+- Pre-deployment health checks
+- Audit stack configuration and security
+- Verify .env and .env.example are in sync
+- Check secrets management compliance
+- Ensure Docker best practices
+- CI/CD pipeline validation gates
+- Identify configuration issues early
+
+[View Full Documentation](./stack-validator/README.md)
+
 ## Repository Structure
 
 ```
@@ -235,6 +274,11 @@ Skills/
 ├── svg-logo-designer/                 # SVG Logo Designer Skill
 │   ├── SKILL.md                       # Main skill definition
 │   └── README.md                      # Skill documentation
+├── stack-validator/                   # GitLab Stack Validator Skill
+│   ├── SKILL.md                       # Main skill definition
+│   ├── README.md                      # Skill documentation
+│   ├── validation-patterns.md         # Architecture patterns and examples
+│   └── common-issues.md               # Issue reference guide
 └── README.md                          # This file
 ```
 
@@ -357,7 +401,18 @@ Users install it with a single command:
 
 ## Version History
 
-### 4.0.0 (2025-10-18)
+### 0.6.0 (2025-10-20)
+- Added GitLab Stack Validator skill v1.0.0
+  - Comprehensive stack project validation before deployment
+  - Critical .env and .env.example synchronization checking
+  - Directory structure, secrets management, and ownership validation
+  - Integrates with docker-validation skill for Docker-specific checks
+  - Multiple validation modes (standard, strict, permissive)
+  - JSON and text output formats for CI/CD integration
+  - Works with companion skills: stack-creator and secrets-manager
+  - Complete validation patterns and common issues reference guides
+
+### 0.5.0 (2025-10-18)
 - Added Docker Configuration Validator skill v1.0.0
   - Comprehensive Dockerfile and Docker Compose validation
   - Modern Compose syntax enforcement (no obsolete version field)
@@ -368,7 +423,7 @@ Users install it with a single command:
   - CI/CD integration templates (GitHub Actions, GitLab CI)
   - Complete validation checklists and tool installation guides
 
-### 3.0.0 (2025-10-18)
+### 0.4.0 (2025-10-18)
 - Added Web Design Builder skill v1.0.0
   - HTML5/JavaScript design generation
   - Playwright MCP integration for automatic verification
@@ -382,14 +437,14 @@ Users install it with a single command:
   - Color psychology guidance
   - Complete usage guidelines
 
-### 2.0.0 (2025-10-18)
+### 0.2.0 (2025-10-18)
 - Added UI/UX Design Review skill v1.0.0
   - Comprehensive WCAG 2.1/2.2 compliance framework
   - Accessible component pattern library
   - Visual design and UX evaluation
   - Testing tools and resources guide
 
-### 1.0.0 (2025-10-18)
+### 0.1.0 (2025-10-18)
 - Initial marketplace setup
 - Python Backend Architecture Review skill v1.0.0
   - Comprehensive review framework
@@ -439,6 +494,6 @@ These skills are provided as-is for use with Claude Code. Individual skills may 
 
 ---
 
-**Marketplace Version:** 4.0.0
-**Last Updated:** 2025-10-18
+**Marketplace Version:** 0.6.0
+**Last Updated:** 2025-10-20
 **Maintainer:** rknall
