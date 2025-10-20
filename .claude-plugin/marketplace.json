@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "rknall-custom-skills",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Custom Claude Code skills marketplace for architecture review, accessibility expertise, creative design generation, and DevOps validation",
   "owner": {
     "name": "rknall"
@@ -53,6 +53,13 @@
       "name": "secrets-manager",
       "source": "./secrets-manager",
       "description": "Manages Docker secrets for GitLab stack projects, ensuring secrets are never in .env or docker-compose.yml. Handles migration from environment variables, validation, auditing, and secure secret generation",
+      "version": "1.0.0",
+      "category": "development"
+    },
+    {
+      "name": "config-generator",
+      "source": "./config-generator",
+      "description": "Generates service-specific configuration files for GitLab stack projects using .env as primary config source. Creates nginx, PostgreSQL, Redis configs, meta files (CLAUDE.md, .gitignore, .dockerignore), with strict validation for secrets and paths",
       "version": "1.0.0",
       "category": "development"
     }
