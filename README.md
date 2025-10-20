@@ -279,6 +279,122 @@ A production-ready skill that manages Docker secrets securely:
 
 [View Full Documentation](./secrets-manager/README.md)
 
+### 8. GitLab Stack Config Generator
+
+**Version:** 1.0.0
+**Category:** Development
+**Description:** Service configuration generator using .env as primary config source
+
+A production-ready skill that generates service configurations:
+- **Service Templates**: Nginx (3 variants), PostgreSQL (3 variants), Redis (3 variants)
+- **Meta Files**: CLAUDE.md (with commit rules), .gitignore, .dockerignore
+- **Configuration Source**: .env as single source of truth (not separate env files)
+- **Directory Structure**: Service-specific directories (./config/service-name/)
+- **Strict Validation**: No secrets in configs, .env/.env.example sync, path validation
+- **Docker Integration**: Uses docker-validation skill for all Docker configs
+
+**Key Features:**
+- User-selectable template defaults (production, development, custom)
+- Flat config structure inside each service directory
+- Environment variable placeholders in all configs
+- Critical .env and .env.example synchronization
+- Secret detection with secrets-manager integration
+- Path validation (all referenced paths must exist)
+- Syntax validation per service type
+- Meta files with proper git exclusions
+
+**When to Use:**
+- Generate service configurations (nginx, PostgreSQL, Redis)
+- Set up project meta files (CLAUDE.md, .gitignore, .dockerignore)
+- Create config templates for new services
+- Ensure configs use .env variables correctly
+- Validate existing configurations
+- Sync .env and .env.example
+
+[View Full Documentation](./config-generator/README.md)
+
+### 9. Newt Blueprint Generator
+
+**Version:** 1.0.0
+**Category:** Development
+**Description:** Generate and validate Pangolin Newt blueprint configurations
+
+A production-ready skill that creates Pangolin Newt blueprints:
+- **Blueprint Formats**: YAML configuration files and Docker Compose labels
+- **Proxy Resources**: HTTP (domain-based), TCP/UDP (port-based) resource configurations
+- **Client Resources**: Olm client resources for SSH, RDP, and other protocols
+- **Authentication**: SSO, basic auth, pincode, and password authentication
+- **Access Control**: IP, CIDR, path, and country-based rules
+- **Validation**: Comprehensive validation with helpful error messages
+
+**Key Features:**
+- Support for both YAML and Docker Labels format
+- Protocol-specific validation (HTTP vs TCP/UDP requirements)
+- Authentication configuration with SSO role/user management
+- Multi-target load balancing support
+- Path-based routing with prefix/exact/regex matching
+- Custom header injection
+- Targets-only resource configuration for simplified setups
+- Detailed validation error explanations
+- Best practices and security recommendations
+
+**When to Use:**
+- Create Pangolin blueprint configurations
+- Expose web applications via domain names (HTTP)
+- Expose databases or other services via ports (TCP/UDP)
+- Configure Olm client resources
+- Set up authentication and access control
+- Validate existing blueprint configurations
+- Convert between YAML and Docker Labels formats
+- Troubleshoot blueprint validation errors
+
+[View Full Documentation](./newt-blueprint-generator/README.md)
+
+### 10. GitLab Stack Creator
+
+**Version:** 1.0.0
+**Category:** Development
+**Description:** Create new GitLab stack projects with complete validation
+
+A production-ready skill that creates GitLab stack projects from scratch:
+- **Directory Structure**: Proper ./config, ./secrets, ./_temporary, ./scripts, ./docs setup
+- **Git Configuration**: Initializes repository with main branch and ff-only merge strategy
+- **Validation Scripts**: Creates validate-stack.sh, pre-commit hooks, setup-hooks.sh
+- **Docker Configuration**: Generates docker-compose.yml validated by docker-validation skill
+- **Secrets Management**: Integrates secrets-manager for secure secret handling
+- **Service Configs**: Uses config-generator for nginx, PostgreSQL, Redis configurations
+- **Documentation**: Generates README.md, CLAUDE.md, setup.md, services.md, ADRs
+
+**Key Features:**
+- Integrates stack-validator, secrets-manager, docker-validation, config-generator skills
+- Never uses workarounds - always asks user for guidance when stuck
+- Complete only when ALL validators pass with NO issues
+- Git hooks for pre-commit validation (blocks commits if validation fails)
+- Comprehensive templates for common stacks (web, full-stack)
+- Architecture decision records in ./docs/decisions/
+- ff-only merge strategy for clean git history
+- main as default branch name
+- All scripts executable and ready to use
+
+**When to Use:**
+- Create new GitLab stack project from scratch
+- Initialize Docker stack with proper structure
+- Set up project with validation from the start
+- Bootstrap production-ready stack following best practices
+- Need git repository with validation hooks
+- Want complete documentation generated automatically
+
+**Completion Criteria:**
+A stack is complete ONLY when:
+- ✅ stack-validator reports NO issues
+- ✅ secrets-manager is satisfied (NO open issues)
+- ✅ docker-validation is satisfied (NO issues)
+- ✅ All validation scripts execute successfully
+- ✅ Git repository properly initialized and configured
+- ✅ Documentation complete in ./docs
+
+[View Full Documentation](./stack-creator/README.md)
+
 ## Repository Structure
 
 ```
@@ -319,6 +435,21 @@ Skills/
 │   ├── README.md                      # Skill documentation
 │   ├── secrets-patterns.md            # Security patterns and best practices
 │   └── migration-guide.md             # Step-by-step migration scenarios
+├── config-generator/                  # GitLab Stack Config Generator Skill
+│   ├── SKILL.md                       # Main skill definition
+│   ├── README.md                      # Skill documentation
+│   ├── service-templates.md           # Service templates (nginx, postgres, redis)
+│   └── validation-rules.md            # Validation rules reference
+├── newt-blueprint-generator/          # Newt Blueprint Generator Skill
+│   ├── SKILL.md                       # Main skill definition
+│   ├── README.md                      # Skill documentation
+│   └── validation-reference.md        # Validation rules reference
+├── stack-creator/                     # GitLab Stack Creator Skill
+│   ├── SKILL.md                       # Main skill definition
+│   ├── README.md                      # Skill documentation
+│   ├── git-hooks-guide.md             # Git hooks and validation scripts
+│   ├── templates-reference.md         # docker-compose and config templates
+│   └── workflow-examples.md           # Example workflows
 └── README.md                          # This file
 ```
 
@@ -441,6 +572,19 @@ Users install it with a single command:
 
 ## Version History
 
+### 0.6.2 (2025-10-20)
+- Added GitLab Stack Config Generator skill v1.0.0
+  - Service-specific configuration generation for GitLab stack projects
+  - .env as primary configuration source (single source of truth)
+  - Service templates: Nginx (3 variants), PostgreSQL (3 variants), Redis (3 variants)
+  - Meta files generation: CLAUDE.md (with commit message rules), .gitignore, .dockerignore
+  - User-selectable template defaults (production, development, custom)
+  - Strict .env and .env.example synchronization checking
+  - Secret detection with secrets-manager integration
+  - Path validation for all referenced files and directories
+  - Docker validation using docker-validation skill (always)
+  - Comprehensive service templates with complete examples
+
 ### 0.6.1 (2025-10-20)
 - Added GitLab Stack Secrets Manager skill v1.0.0
   - Secure Docker secrets management for GitLab stack projects
@@ -547,6 +691,6 @@ These skills are provided as-is for use with Claude Code. Individual skills may 
 
 ---
 
-**Marketplace Version:** 0.6.1
+**Marketplace Version:** 0.6.2
 **Last Updated:** 2025-10-20
 **Maintainer:** rknall

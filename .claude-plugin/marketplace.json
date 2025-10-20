@@ -1,8 +1,8 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "rknall-custom-skills",
-  "version": "0.6.2",
-  "description": "Custom Claude Code skills marketplace for architecture review, accessibility expertise, creative design generation, and DevOps validation",
+  "version": "0.7.1",
+  "description": "Custom Claude Code skills marketplace for architecture review, accessibility expertise, creative design generation, DevOps validation, infrastructure configuration, and GitLab stack management",
   "owner": {
     "name": "rknall"
   },
@@ -61,6 +61,20 @@
       "source": "./config-generator",
       "description": "Generates service-specific configuration files for GitLab stack projects using .env as primary config source. Creates nginx, PostgreSQL, Redis configs, meta files (CLAUDE.md, .gitignore, .dockerignore), with strict validation for secrets and paths",
       "version": "1.0.0",
+      "category": "development"
+    },
+    {
+      "name": "newt-blueprint-generator",
+      "source": "./newt-blueprint-generator",
+      "description": "Generate and validate Pangolin Newt blueprint configurations in YAML or Docker Labels format. Creates proxy resources (HTTP/TCP/UDP), client resources, authentication settings, and access control rules",
+      "version": "1.0.0",
+      "category": "development"
+    },
+    {
+      "name": "stack-creator",
+      "source": "./stack-creator",
+      "description": "Create new GitLab stack projects with proper directory structure, git configuration (main branch, ff-only), validation hooks, and comprehensive documentation. Integrates stack-validator, secrets-manager, docker-validation, and config-generator. Complete only when all validations pass",
+      "version": "0.1.0",
       "category": "development"
     }
   ]
