@@ -1,498 +1,239 @@
 ---
-name: "GitLab Stack Secrets Manager"
+name: "secrets-manager"
 description: "Manages Docker secrets for GitLab stack projects, ensuring secrets are never in .env or docker-compose.yml, properly stored in ./secrets directory, and securely integrated with Docker secrets. Use when users need to create secrets, migrate from environment variables, validate secret configuration, audit secret usage, or ensure secrets are never committed to git."
 ---
 
 # GitLab Stack Secrets Manager
 
-This skill manages secrets for GitLab stack projects, ensuring secrets are stored securely, never exposed in configuration files, and properly integrated with Docker secrets.
-
 ## When to Use This Skill
 
-Activate this skill when the user requests:
-- Create or manage Docker secrets
+Activate when the user requests any of:
+- Create, rotate, or remove Docker secrets
 - Migrate environment variables to Docker secrets
 - Validate secret configuration and permissions
-- Audit secret usage and detect leaks
-- Ensure secrets aren't in .env or docker-compose.yml
-- Check if secrets are exposed in git
-- Generate secure random secrets
-- Rotate existing secrets
+- Audit secret usage or detect leaks
 - Fix secret-related security issues
 
-## Core Security Principles
+## Security Rules
 
-**CRITICAL RULES** - Never violated:
+These rules are **never** violated. See [secrets-patterns.md](./secrets-patterns.md) for full rationale and patterns.
 
-1. **No Secrets in .env**: Secrets MUST NEVER be in .env file
-2. **No Secrets in docker-compose.yml**: No plaintext secrets in environment variables
-3. **./secrets Directory**: All secrets in ./secrets with 700 permissions
-4. **Secret Files**: Individual files with 600 permissions
-5. **Git Protection**: ./secrets/* in .gitignore, never committed
-6. **Proper Ownership**: All files owned by Docker user (not root)
-7. **Docker Secrets Only**: Use Docker secrets mechanism exclusively
+1. **No secrets in `.env`** or `docker-compose.yml` environment variables
+2. All secrets stored in `./secrets/` directory (700 permissions)
+3. Individual secret files have 600 permissions, non-root ownership
+4. `./secrets/*` in `.gitignore`, never committed to git
+5. Use Docker secrets mechanism exclusively
+6. Never display actual secret values -- show `[REDACTED]`
 
-## Secret Management Workflow
+## Workflow
 
-### Phase 1: Understanding User Intent
+### Step 1: Assess Current State
 
-**Step 1: Determine the Operation**
+Determine the operation (create, migrate, validate, audit, rotate, remove) and gather context:
 
-Ask yourself what the user wants to do:
-- Create new secrets?
-- Migrate existing environment variables to secrets?
-- Validate current secret configuration?
-- Audit secrets for leaks or issues?
-- Update or rotate existing secrets?
-- Remove secrets?
+```bash
+# Check project state
+ls -ld ./secrets 2>/dev/null
+ls -la ./secrets/ 2>/dev/null
+cat .gitignore | grep secrets
+```
 
-**Step 2: Gather Context**
+```bash
+# Scan for secrets in wrong places
+grep -E "(PASSWORD|SECRET|KEY|TOKEN|API)" .env 2>/dev/null
+grep -E "(PASSWORD|SECRET|KEY|TOKEN)" docker-compose.yml 2>/dev/null
+```
 
-1. Check current project state:
-   - Does ./secrets directory exist?
-   - Does docker-compose.yml exist?
-   - Does .env file exist?
-   - Is this part of stack-validator findings?
+```bash
+# Check git safety
+git status --porcelain | grep secrets/
+git log --all --full-history -- ./secrets/ 2>/dev/null
+```
 
-2. Review docker-compose.yml:
-   - Any secrets already defined?
-   - Any environment variables that look like secrets?
-   - Which services need secrets?
+**If secrets found in `.env` or `docker-compose.yml`**: flag as critical, proceed to [Migration](#step-3-migrate-secrets).
 
-3. Scan for security issues:
-   - Secrets in .env?
-   - Secrets in docker-compose.yml environment variables?
-   - Secrets tracked in git?
+### Step 2: Create Secrets
 
-### Phase 2: Secret Creation
+**Prerequisites**: Ensure `./secrets` directory exists with correct permissions.
 
-**When**: User wants to create new secrets
+```bash
+mkdir -p ./secrets && chmod 700 ./secrets
+```
 
-**Step 1: Validate Prerequisites**
+**Generate and store the secret** (no trailing newline):
 
-1. Check if ./secrets directory exists:
-   ```bash
-   ls -ld ./secrets
-   ```
-2. If missing, create with proper permissions:
-   ```bash
-   mkdir -p ./secrets
-   chmod 700 ./secrets
-   ```
+```bash
+# Alphanumeric (32 chars)
+openssl rand -base64 32 | tr -d '/+=' | head -c 32 > ./secrets/secret_name
 
-**Step 2: Determine Secret Details**
+# Hex (64 chars)
+openssl rand -hex 32 > ./secrets/secret_name
 
-Ask the user (or infer from context):
-- Secret name (e.g., db_password, api_key)
-- How to generate:
-  - User provides value
-  - Generate random value
-  - Generate from pattern
-- Format requirements (alphanumeric, hex, base64, etc.)
-- Length requirements
+# Base64 (32 bytes)
+openssl rand -base64 32 > ./secrets/secret_name
 
-**Step 3: Create Secret File**
+# UUID
+uuidgen > ./secrets/secret_name
+```
 
-1. Generate or accept secret value
-2. Create file in ./secrets:
-   ```bash
-   echo -n "secret-value" > ./secrets/secret_name
-   ```
-3. Set proper permissions:
-   ```bash
-   chmod 600 ./secrets/secret_name
-   ```
-4. Verify ownership (should not be root)
+```bash
+# Lock down permissions
+chmod 600 ./secrets/secret_name
+```
 
-**Step 4: Update docker-compose.yml**
+**Update `docker-compose.yml`**:
 
-1. Add to top-level secrets section:
-   ```yaml
-   secrets:
-     secret_name:
-       file: ./secrets/secret_name
-   ```
+```yaml
+# Top-level secrets section
+secrets:
+  secret_name:
+    file: ./secrets/secret_name
 
-2. Add to appropriate service:
-   ```yaml
-   services:
-     myservice:
-       secrets:
-         - secret_name
-   ```
+# Add to service
+services:
+  myservice:
+    secrets:
+      - secret_name
+```
 
-**Step 5: Verify .gitignore**
+**Update `.gitignore`**:
 
-Ensure ./secrets is excluded:
 ```gitignore
 /secrets/
 /secrets/*
 !secrets/.gitkeep
 ```
 
-### Phase 3: Secret Validation
+**Error recovery**: If `chmod` fails (e.g., filesystem doesn't support POSIX permissions), verify the host filesystem type and document the limitation. On non-POSIX filesystems, rely on directory-level access controls instead.
 
-**When**: User wants to validate secret configuration, or as part of other operations
+### Step 3: Migrate Secrets
 
-**Step 1: Directory Structure Validation**
+> For detailed migration scenarios and troubleshooting, see [migration-guide.md](./migration-guide.md).
 
-1. Check ./secrets exists:
-   ```bash
-   [ -d ./secrets ] && echo "exists" || echo "missing"
-   ```
+**Identify** secrets to migrate:
 
-2. Check permissions (should be 700):
-   ```bash
-   stat -c "%a" ./secrets  # Linux
-   stat -f "%OLp" ./secrets  # macOS
-   ```
-
-3. Check ownership (not root):
-   ```bash
-   ls -ld ./secrets
-   ```
-
-**Step 2: Secret Files Validation**
-
-1. List all secret files:
-   ```bash
-   find ./secrets -type f ! -name .gitkeep
-   ```
-
-2. For each file, check:
-   - Permissions (should be 600)
-   - Ownership (not root)
-   - Not empty
-   - Readable
-
-**Step 3: docker-compose.yml Validation**
-
-1. Parse secrets section:
-   - List all defined secrets
-   - Verify files exist for each secret
-
-2. Check service secret references:
-   - All referenced secrets are defined
-   - Services use `secrets:` key, not environment vars
-
-3. **CRITICAL**: Scan for secrets in environment variables:
-   - Look for patterns: PASSWORD, SECRET, KEY, TOKEN, API
-   - Flag any that look like secrets
-   - **These MUST be migrated**
-
-**Step 4: .env File Validation**
-
-1. **CRITICAL**: Scan .env for secrets:
-   - Pattern matching: *PASSWORD*, *SECRET*, *KEY*, *TOKEN*, *API*
-   - Long random-looking strings
-   - Base64-encoded values
-   - Any value that should be a secret
-
-2. If secrets found in .env:
-   - **This is a CRITICAL security issue**
-   - List all detected secrets
-   - Recommend immediate migration
-
-**Step 5: Git Safety Check**
-
-1. Verify .gitignore excludes ./secrets:
-   ```bash
-   grep -q "secrets" .gitignore
-   ```
-
-2. Check if any secrets are staged:
-   ```bash
-   git status --porcelain | grep secrets/
-   ```
-
-3. Check git history for secrets (if requested):
-   ```bash
-   git log --all --full-history -- ./secrets/
-   ```
-
-**Step 6: Generate Validation Report**
-
-```
-🔐 Secrets Validation Report
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-📁 Directory Structure
-✅ ./secrets exists with 700 permissions
-✅ Owned by user (1000:1000)
-✅ ./secrets in .gitignore
-
-📄 Secret Files (3)
-✅ db_password - 600 permissions, 32 bytes
-✅ api_key - 600 permissions, 64 bytes
-⚠️  jwt_secret - 644 permissions (should be 600)
-
-🐳 Docker Integration
-✅ 3 secrets defined in docker-compose.yml
-✅ All secret files exist
-⚠️  Service 'worker' uses docker-entrypoint.sh
-
-❌ CRITICAL SECURITY ISSUES
-❌ .env contains secrets:
-   * DB_PASSWORD=supersecret123
-   * API_KEY=sk_live_abc123
-   ** IMMEDIATE ACTION REQUIRED **
-
-❌ docker-compose.yml environment variables contain secrets:
-   * Service 'app' - JWT_SECRET in environment
-   ** MUST MIGRATE TO DOCKER SECRETS **
-
-✅ Git Safety
-✅ No secrets in git staging
-✅ .gitignore properly configured
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Status: FAILED (2 critical issues)
-
-🔧 IMMEDIATE ACTIONS REQUIRED
-1. Migrate secrets from .env to Docker secrets
-2. Remove secrets from docker-compose.yml environment
-3. Fix permissions on jwt_secret file
+```bash
+grep -E "(PASSWORD|SECRET|KEY|TOKEN|API)" .env 2>/dev/null
 ```
 
-### Phase 4: Secret Migration
+**Confirm with user** which variables to migrate and their target secret names.
 
-**When**: Secrets found in .env or docker-compose.yml environment variables
+**For each secret**:
 
-**CRITICAL**: This is a security issue that must be fixed
-
-**Step 1: Identify Secrets to Migrate**
-
-1. Scan .env for secret patterns:
-   ```bash
-   grep -E "(PASSWORD|SECRET|KEY|TOKEN|API)" .env
-   ```
-
-2. Scan docker-compose.yml environment sections:
-   ```yaml
-   # Look for patterns in environment variables
-   ```
-
-3. List all detected secrets with:
-   - Variable name
-   - Current location (.env or compose)
-   - Current value (for migration)
-   - Suggested secret name
-
-**Step 2: Confirm with User**
-
-Present findings and ask:
-- Which variables should be migrated?
-- Confirm secret names
-- Confirm it's safe to remove from .env/compose
-
-**Step 3: Create Secret Files**
-
-For each secret to migrate:
-
-1. Extract current value
-2. Create secret file:
+1. Extract value and create secret file:
    ```bash
    echo -n "$value" > ./secrets/secret_name
    chmod 600 ./secrets/secret_name
    ```
-3. Add to docker-compose.yml secrets section
 
-**Step 4: Update Service Configurations**
+2. Add to `docker-compose.yml` secrets section (see Step 2).
 
-For each service using the secret:
-
-1. Add to service secrets list
-2. Remove from environment variables
-3. If container supports `_FILE` suffix:
+3. Update service configuration. If the container supports `_FILE` suffix:
    ```yaml
    environment:
      DB_PASSWORD_FILE: /run/secrets/db_password
    ```
-4. If container doesn't support native secrets:
-   - Create or update docker-entrypoint.sh
-   - Document this requirement
 
-**Step 5: Clean Up**
+4. If no native secret support, generate a `docker-entrypoint.sh` (see [Entrypoint Generation](#entrypoint-generation) below).
 
-1. Remove secrets from .env:
-   - Either delete the lines
-   - Or comment them out with migration note
-2. Remove from docker-compose.yml environment
-3. Verify .env.example doesn't have secret values
+5. Remove the secret from `.env` and/or `docker-compose.yml` environment.
 
-**Step 6: Verification**
+**Error recovery**: If a service fails to start after migration:
+- Check `docker compose logs <service>` for secret-loading errors
+- Verify the secret file exists at `/run/secrets/<name>` inside the container: `docker compose exec <service> ls -la /run/secrets/`
+- Confirm the service supports the `_FILE` suffix variant; if not, use the entrypoint approach
+- Roll back by restoring the environment variable temporarily while debugging
 
-1. Test that services start correctly
-2. Verify services can access secrets
-3. Confirm no secrets remain in .env or compose
-4. Run validation to confirm
+### Step 4: Validate
 
-### Phase 5: Secret Generation
+Run this checklist after any create, migrate, or audit operation.
 
-**When**: Need to generate secure random secrets
-
-**Step 1: Determine Format Requirements**
-
-Common formats:
-- **Alphanumeric**: Letters and numbers (default)
-- **Hex**: Hexadecimal (0-9, a-f)
-- **Base64**: Base64 encoding
-- **Numeric**: Numbers only
-- **UUID**: UUID v4 format
-
-**Step 2: Determine Length**
-
-Standard lengths:
-- Database passwords: 32-64 characters
-- API keys: 32-64 characters
-- JWT secrets: 64 characters (or 32 bytes base64)
-- Session secrets: 32 characters
-- Encryption keys: 32 bytes (256-bit)
-
-**Step 3: Generate Secret**
-
-Use cryptographically secure methods:
+**Directory and permissions**:
 
 ```bash
-# Alphanumeric (32 chars)
-openssl rand -base64 32 | tr -d '/+=' | head -c 32
+# Directory exists with 700
+[ -d ./secrets ] && stat -f "%OLp" ./secrets  # macOS
+[ -d ./secrets ] && stat -c "%a" ./secrets     # Linux
 
-# Hex (64 chars)
-openssl rand -hex 32
+# All files have 600 permissions
+find ./secrets -type f ! -name .gitkeep -not -perm 600
 
-# Base64 (32 bytes)
-openssl rand -base64 32
-
-# UUID
-uuidgen
-
-# Custom (e.g., 16 alphanumeric)
-LC_ALL=C tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 16
+# No root-owned files
+find ./secrets -user root
 ```
 
-**Step 4: Store Securely**
+**Docker Compose integration**:
 
-1. Write to file (no trailing newline):
-   ```bash
-   echo -n "$secret" > ./secrets/secret_name
-   ```
-2. Set permissions:
-   ```bash
-   chmod 600 ./secrets/secret_name
-   ```
+```bash
+# All referenced secret files exist
+# (parse secrets: section and verify each file: path)
+grep -A1 'file:' docker-compose.yml | grep -oP '\./secrets/\S+' | while read f; do
+  [ -f "$f" ] && echo "OK: $f" || echo "MISSING: $f"
+done
+```
 
-### Phase 6: Secret Auditing
+**Leak detection**:
 
-**When**: User wants to audit secret usage, find leaks, or review security
+```bash
+# No secrets in .env
+grep -cE "(PASSWORD|SECRET|KEY|TOKEN|API)" .env 2>/dev/null
 
-**Step 1: Secret Inventory**
+# No secrets in compose environment sections
+grep -A20 'environment:' docker-compose.yml | grep -iE "(password|secret|key|token)"
 
-List all secrets with details:
-- Name
-- File path
-- File size
-- Permissions
-- Owner
-- Created date (if available)
-- Last modified
+# .gitignore covers secrets
+grep -q "secrets" .gitignore && echo "OK" || echo "MISSING"
 
-**Step 2: Usage Analysis**
+# Nothing staged in git
+git status --porcelain | grep secrets/
+```
 
-For each secret:
-1. Check if defined in docker-compose.yml
-2. List services using it
-3. Check if file exists
-4. Verify it's actually used
+**Error recovery**: For each failing check, apply the corresponding fix:
+- Missing directory -> `mkdir -p ./secrets && chmod 700 ./secrets`
+- Wrong permissions -> `chmod 600 ./secrets/<file>` or `chmod 700 ./secrets`
+- Root ownership -> `chown $(id -u):$(id -g) ./secrets/*`
+- Missing `.gitignore` entry -> append `/secrets/` to `.gitignore`
+- Secrets in `.env`/compose -> proceed to [Migration](#step-3-migrate-secrets)
 
-**Step 3: Find Unused Secrets**
+Re-run validation after fixes until all checks pass.
 
-1. Secrets defined but not used in any service
-2. Secret files that aren't in docker-compose.yml
-3. Suggest removal or documentation
+### Step 5: Audit
 
-**Step 4: Leak Detection**
+**Secret inventory**:
 
-Check common leak locations:
+```bash
+find ./secrets -type f ! -name .gitkeep -exec ls -la {} \;
+```
 
-1. **.env file** (CRITICAL):
-   ```bash
-   grep -E "(PASSWORD|SECRET|KEY|TOKEN)" .env
-   ```
+**Usage analysis**: For each secret file, verify it appears in the `docker-compose.yml` secrets section and is referenced by at least one service. Flag:
+- Defined but unused secrets
+- Secret files not in `docker-compose.yml`
+- Referenced secrets with missing files
 
-2. **docker-compose.yml environment** (CRITICAL):
-   - Scan all environment sections
-   - Flag any secrets
+**Leak detection across the project**:
 
-3. **Configuration files**:
-   ```bash
-   grep -r "password\|secret\|key" ./config/
-   ```
+```bash
+# Config files
+grep -r "password\|secret\|key" ./config/ 2>/dev/null
 
-4. **Git history**:
-   ```bash
-   git log -p --all -S "secret-pattern"
-   ```
+# Git history
+git log -p --all -S "PASSWORD" --diff-filter=A -- '*.env' '*.yml'
+```
 
-5. **Docker logs**:
-   - Check recent logs for secret exposure
+See [secrets-patterns.md](./secrets-patterns.md) for comprehensive detection patterns and common secret types.
 
-**Step 5: Permission Audit**
+## Entrypoint Generation
 
-1. Check all files in ./secrets:
-   ```bash
-   find ./secrets -type f -not -perm 600
-   ```
+Required only when a container does not support native Docker secrets or the `_FILE` suffix convention.
 
-2. Check directory permissions:
-   ```bash
-   [ "$(stat -c '%a' ./secrets)" = "700" ]
-   ```
+**Containers with native support** (no entrypoint needed): PostgreSQL, MySQL, MariaDB, Redis, MongoDB.
 
-3. Check ownership:
-   ```bash
-   find ./secrets -user root
-   ```
-
-**Step 6: Generate Audit Report**
-
-Include:
-- Total secrets count
-- Usage statistics
-- Security issues found
-- Recommendations
-- Risk assessment
-
-### Phase 7: docker-entrypoint.sh Generation
-
-**When**: Container doesn't support native Docker secrets
-
-**Step 1: Determine Necessity**
-
-Check if container supports secrets:
-- PostgreSQL, MySQL, MariaDB: Support `_FILE` suffix ✅
-- Redis: Native secret support ✅
-- MongoDB: Native secret support ✅
-- Most modern containers: Check documentation
-
-Only create entrypoint if:
-- Container expects environment variables only
-- No `_FILE` suffix support
-- No native /run/secrets/ reading
-
-**Step 2: Identify Required Secrets**
-
-List secrets that need to be loaded:
-- Secret name (in ./secrets/)
-- Environment variable name
-- Service name
-
-**Step 3: Generate Entrypoint Script**
+For containers that only read environment variables, generate:
 
 ```bash
 #!/bin/bash
 set -e
 
-# Function to load secrets from docker secrets into environment
 load_secret() {
   local secret_name=$1
   local env_var=$2
@@ -500,29 +241,24 @@ load_secret() {
 
   if [ -f "$secret_file" ]; then
     export "${env_var}=$(cat "$secret_file")"
-    echo "Loaded secret: $secret_name -> $env_var"
   else
     echo "ERROR: Secret file $secret_file not found!" >&2
     exit 1
   fi
 }
 
-# Load all required secrets
+# Load required secrets
 load_secret "db_password" "DB_PASSWORD"
 load_secret "api_key" "API_KEY"
-load_secret "jwt_secret" "JWT_SECRET"
 
-# Execute the main command
 exec "$@"
 ```
-
-**Step 4: Set Permissions**
 
 ```bash
 chmod +x docker-entrypoint.sh
 ```
 
-**Step 5: Update docker-compose.yml**
+Update `docker-compose.yml`:
 
 ```yaml
 services:
@@ -536,101 +272,46 @@ services:
       - api_key
 ```
 
-**Step 6: Document**
+**Error recovery**: If the entrypoint fails at runtime:
+- Check the script is mounted correctly: `docker compose exec <service> cat /docker-entrypoint.sh`
+- Verify secrets are mounted: `docker compose exec <service> ls /run/secrets/`
+- Ensure the script has `+x` permission and uses LF line endings (not CRLF)
 
-Add comment explaining why entrypoint is needed:
-```yaml
-# docker-entrypoint.sh required because this container
-# doesn't support Docker secrets natively
-```
+## Validation Report Format
 
-## Communication Style
-
-When managing secrets:
-
-1. **Be Security-Focused**: Emphasize security at every step
-2. **Be Clear About Risks**: Explain why secrets in .env/compose is dangerous
-3. **Be Urgent About Critical Issues**: Don't downplay security problems
-4. **Be Helpful**: Provide exact commands to fix issues
-5. **Be Thorough**: Check all potential leak locations
-6. **Be Educational**: Explain why Docker secrets are better
-7. **Never Display Secret Values**: Show "[REDACTED]" instead
-
-## Critical Validation Points
-
-These are **must-pass** security criteria:
-
-1. ✅ NO secrets in .env file
-2. ✅ NO secrets in docker-compose.yml environment variables
-3. ✅ ./secrets directory exists with 700 permissions
-4. ✅ All secret files have 600 permissions
-5. ✅ ./secrets/* in .gitignore
-6. ✅ No secrets tracked in git
-7. ✅ No root-owned secret files
-8. ✅ All referenced secrets exist
-9. ✅ docker-entrypoint.sh only when truly necessary
-
-## Integration with Companion Skills
-
-### stack-validator
-- Stack-validator calls this skill for secret validation
-- Validates that secrets follow proper patterns
-- Detects secrets in .env and compose files
-
-### stack-creator
-- Creates ./secrets directory with proper setup
-- Generates .gitkeep file
-- Sets up .gitignore correctly
-- Creates initial secret placeholders
-
-### config-generator
-- Ensures configs don't contain secrets
-- References secrets properly
-- Uses environment variables for non-secrets only
-
-## Important Notes
-
-- **Read-Only for Secrets**: NEVER display actual secret values to user
-- **Security First**: Always prioritize security over convenience
-- **Migration Required**: Secrets in .env/compose MUST be migrated
-- **No Shortcuts**: Always follow security best practices
-- **Verify Everything**: Check permissions, ownership, git status
-- **Companion-Aware**: Work with other skills seamlessly
-
-## Example Workflow: Complete Secret Setup
+After any operation, summarize results in this format:
 
 ```
-User: "Set up secrets for my database"
+Secrets Validation Report
+=========================
 
-1. Check current state
-   - ./secrets missing → create it
-   - docker-compose.yml has DB_PASSWORD in environment → CRITICAL ISSUE
+Directory Structure
+  [PASS] ./secrets exists with 700 permissions
+  [PASS] Owned by user (not root)
+  [PASS] ./secrets in .gitignore
 
-2. Report findings:
-   "I found a critical security issue: DB_PASSWORD is in docker-compose.yml
-    environment variables. I'll migrate this to Docker secrets."
+Secret Files (N total)
+  [PASS] db_password - 600 permissions, 32 bytes
+  [FAIL] jwt_secret - 644 permissions (expected 600)
 
-3. Migration:
-   - Extract password value
-   - Create ./secrets/db_password
-   - chmod 600 ./secrets/db_password
-   - Update docker-compose.yml secrets section
-   - Update postgres service to use secrets
-   - Remove from environment
+Docker Integration
+  [PASS] N secrets defined in docker-compose.yml
+  [PASS] All secret files exist
 
-4. Verification:
-   - Run validation
-   - Confirm no secrets in compose
-   - Check .gitignore
-   - Verify permissions
+Leak Detection
+  [PASS] No secrets in .env
+  [FAIL] docker-compose.yml environment contains: JWT_SECRET
+  [PASS] No secrets in git staging
 
-5. Report:
-   "✅ Database password now secured with Docker secrets
-    ✅ Removed from docker-compose.yml environment
-    ✅ File permissions set correctly
-    ✅ Added to .gitignore"
+Status: PASS / FAIL (N issues)
+
+Required Actions:
+1. Fix permissions on jwt_secret: chmod 600 ./secrets/jwt_secret
+2. Migrate JWT_SECRET from compose environment to Docker secrets
 ```
 
----
+## Companion Skills
 
-*This skill ensures secrets are managed securely and never exposed in configuration files or version control.*
+- **stack-validator**: Calls this skill for secret validation; detects secrets in `.env` and compose files
+- **stack-creator**: Creates `./secrets` directory, `.gitkeep`, `.gitignore` entries, and initial placeholders
+- **config-generator**: Ensures configs reference secrets properly without embedding them

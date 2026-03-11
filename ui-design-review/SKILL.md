@@ -1,774 +1,240 @@
 ---
-name: "UI/UX Design Review"
+name: "ui-design-review"
 description: "Comprehensive design review for websites and desktop applications with extensive accessibility analysis. Use this skill when users ask you to review UI/UX designs, wireframes, mockups, prototypes, or deployed interfaces for usability, accessibility (WCAG compliance), visual design, interaction patterns, responsive design, and best practices for web and desktop applications."
 ---
 
 # UI/UX Design Review
 
-This skill provides comprehensive design review capabilities for websites and desktop applications, with a strong focus on accessibility compliance and best practices.
+## Review Workflow
 
-## When to Use This Skill
+### Phase 1: Context Gathering
 
-Activate this skill when the user requests:
-- Review of UI/UX designs, wireframes, or mockups
-- Accessibility audit (WCAG 2.1/2.2 compliance)
-- Usability assessment
-- Visual design critique
-- Interaction pattern review
-- Responsive design evaluation
-- Design system assessment
-- Component library review
-- User flow analysis
-- Information architecture review
-- Desktop application UI review
+Before reviewing, establish:
+- Platform(s): web, desktop (Windows/Mac/Linux), mobile
+- Target WCAG compliance level (A, AA, or AAA)
+- Target audience, technical proficiency, and accessibility needs
+- Design system or brand guidelines in use
+- Project stage (wireframe, pre-launch, live)
+- Browser/OS support requirements
 
-## Review Framework
+**Validation checkpoint:** Do not proceed until platform and compliance level are confirmed.
 
-### 1. Initial Analysis
+### Phase 2: Artifact Analysis
 
-When a user provides a design or interface, begin by:
-
-1. **Understanding Context**
-   - Ask clarifying questions about:
-     - Target audience and personas
-     - Platform(s): web, desktop (Windows/Mac/Linux), mobile
-     - Accessibility requirements and compliance level needed
-     - Brand guidelines or design system in use
-     - User research or testing conducted
-     - Technical constraints
-     - Browser/OS support requirements
-     - Key user goals and tasks
-
-2. **Design Artifact Analysis**
-   - If designs, screenshots, or prototypes are provided, analyze:
-     - Visual hierarchy and layout
-     - Color usage and contrast
-     - Typography and readability
-     - Component patterns and consistency
-     - Navigation structure
-     - Interactive elements
-     - Responsive behavior
-     - State variations (hover, active, disabled, error, etc.)
-
-### 2. Comprehensive Review Areas
-
-Evaluate the design across these dimensions:
-
-#### A. Accessibility (WCAG 2.1/2.2 Compliance)
-
-This is a CRITICAL area that must be thoroughly reviewed for all interfaces.
-
-**Level A Requirements (Minimum):**
-
-**1.1 Text Alternatives**
-- [ ] All images have appropriate alt text
-- [ ] Decorative images have empty alt attributes
-- [ ] Icons have accessible labels
-- [ ] Complex images have detailed descriptions
-- [ ] Image buttons have descriptive text
-
-**1.2 Time-based Media**
-- [ ] Video content has captions
-- [ ] Audio content has transcripts
-- [ ] Pre-recorded media has alternatives
-
-**1.3 Adaptable**
-- [ ] Content structure is logical without CSS
-- [ ] Reading order is meaningful
-- [ ] Instructions don't rely solely on sensory characteristics
-- [ ] Semantic HTML is used properly
-- [ ] Form labels are programmatically associated
-
-**1.4 Distinguishable**
-- [ ] Color is not the only visual means of conveying information
-- [ ] Audio controls are available
-- [ ] Text has sufficient contrast (4.5:1 for normal text, 3:1 for large text)
-- [ ] Text can be resized up to 200% without loss of functionality
-- [ ] Images of text are avoided (except logos)
-
-**2.1 Keyboard Accessible**
-- [ ] All functionality is keyboard accessible
-- [ ] No keyboard traps exist
-- [ ] Keyboard shortcuts don't conflict with assistive technologies
-- [ ] Focus order is logical
-- [ ] Focus is visible at all times
-
-**2.2 Enough Time**
-- [ ] Time limits can be adjusted, extended, or turned off
-- [ ] Moving, blinking, scrolling content can be paused
-- [ ] Auto-updating content can be paused or controlled
-
-**2.3 Seizures and Physical Reactions**
-- [ ] Content doesn't flash more than 3 times per second
-- [ ] No content violates flash threshold
-
-**2.4 Navigable**
-- [ ] Skip links allow bypassing repeated content
-- [ ] Page titles are descriptive and unique
-- [ ] Focus order preserves meaning
-- [ ] Link purpose is clear from context
-- [ ] Multiple navigation methods exist
-- [ ] Headings and labels are descriptive
-
-**2.5 Input Modalities**
-- [ ] All functionality works with pointer gestures
-- [ ] Touch targets are sufficiently large (minimum 44x44px)
-- [ ] Accidental activation is prevented
-
-**3.1 Readable**
-- [ ] Page language is identified
-- [ ] Language changes are marked up
-
-**3.2 Predictable**
-- [ ] Focus doesn't trigger unexpected changes
-- [ ] Input doesn't trigger unexpected changes
-- [ ] Navigation is consistent across pages
-- [ ] Components are identified consistently
-
-**3.3 Input Assistance**
-- [ ] Form errors are identified and described
-- [ ] Labels and instructions are provided
-- [ ] Error suggestions are offered
-- [ ] Critical actions can be reversed, checked, or confirmed
-
-**4.1 Compatible**
-- [ ] HTML is valid and properly nested
-- [ ] IDs are unique
-- [ ] ARIA attributes are used correctly
-- [ ] Status messages are programmatically determinable
-
-**Level AA Requirements (Recommended):**
-
-- [ ] Contrast ratio is at least 4.5:1 (3:1 for large text)
-- [ ] Text can be resized up to 200% without assistive technology
-- [ ] Images of text are avoided unless customizable
-- [ ] Visual presentation of text allows customization
-- [ ] Audio content doesn't interfere with screen readers
-- [ ] Multiple ways to locate pages exist
-- [ ] Headings and labels are descriptive
-- [ ] Focus indicator is visible
-- [ ] Section headings are used to organize content
-
-**Level AAA Requirements (Best Practice):**
-
-- [ ] Contrast ratio is at least 7:1 (4.5:1 for large text)
-- [ ] No images of text are used
-- [ ] Text spacing can be adjusted
-- [ ] Content reflows to 320px without scrolling
-- [ ] Hover/focus content is dismissible and persistent
-
-**Provide Feedback On:**
-- Specific WCAG violations with severity level
-- Missing ARIA labels and landmarks
-- Color contrast issues with measured ratios
-- Keyboard navigation problems
-- Screen reader compatibility issues
-- Missing alternative text
-- Form accessibility issues
-- Focus management problems
-- Semantic HTML issues
-
-**Testing Recommendations:**
-- Use automated tools: axe DevTools, WAVE, Lighthouse
-- Manual keyboard navigation testing
-- Screen reader testing (NVDA, JAWS, VoiceOver)
-- Color contrast analyzers
-- Focus indicator visibility
-- Zoom testing (200%, 400%)
-
-#### B. Visual Design & Aesthetics
-
-**Evaluate:**
+Analyze provided designs (screenshots, Figma links, prototypes, live URLs) across:
 - Visual hierarchy and layout structure
-- Color palette and color theory application
-- Typography choices and hierarchy
-- White space and density
-- Visual balance and alignment
-- Consistency with brand guidelines
-- Modern vs dated design patterns
-- Visual weight distribution
-- Grid system usage
-- Component visual consistency
+- Color usage and contrast ratios
+- Typography choices and readability
+- Component patterns and state coverage
+- Navigation structure and information architecture
+- Responsive behavior across breakpoints
+- Interactive element states (hover, active, focus, disabled, error)
 
-**Provide Feedback On:**
-- Cluttered or overwhelming layouts
-- Poor visual hierarchy
-- Inconsistent spacing
-- Typography issues (too many fonts, poor sizing)
-- Color palette problems
-- Lack of visual breathing room
-- Misaligned elements
-- Inconsistent component styling
-- Dated design patterns
+**Validation checkpoint:** Confirm you have sufficient artifacts to review. Request missing materials before continuing.
 
-**Design System Considerations:**
-- Design token usage (colors, spacing, typography)
-- Component library consistency
-- Pattern library adherence
-- Brand guideline compliance
+### Phase 3: Accessibility Audit
 
-#### C. User Experience & Usability
+Conduct a WCAG compliance review using the full [WCAG Checklist](wcag-checklist.md).
 
-**Evaluate:**
-- User flow logic and efficiency
-- Information architecture
-- Navigation patterns and clarity
-- Cognitive load
-- Task completion efficiency
-- Error prevention and recovery
-- Feedback mechanisms
-- Learnability for new users
-- Efficiency for experienced users
-- Mental models and user expectations
-- Consistency with platform conventions
+Focus on these high-impact areas first:
 
-**Provide Feedback On:**
-- Confusing navigation
-- Too many steps to complete tasks
-- Unclear labeling or terminology
-- Missing or unclear feedback
-- Poor error messages
-- Inconsistent interaction patterns
-- Violation of established conventions
-- High cognitive load
-- Missing confirmation for destructive actions
+1. **Semantic HTML structure** - proper heading hierarchy, landmark regions, list markup
+2. **Keyboard accessibility** - tab order, focus visibility, no keyboard traps
+3. **Color contrast** - measure ratios against WCAG thresholds (4.5:1 normal text, 3:1 large text for AA)
+4. **Text alternatives** - alt text on images, labels on icons, descriptions on complex graphics
+5. **Form accessibility** - associated labels, error identification, input purpose
+6. **ARIA usage** - correct roles, states, and properties where semantic HTML is insufficient
 
-**Jakob Nielsen's Usability Heuristics:**
-1. Visibility of system status
-2. Match between system and real world
-3. User control and freedom
-4. Consistency and standards
-5. Error prevention
-6. Recognition rather than recall
-7. Flexibility and efficiency of use
-8. Aesthetic and minimalist design
-9. Help users recognize and recover from errors
-10. Help and documentation
+#### Common Fixes: Before/After Examples
 
-#### D. Responsive Design & Layout
+**Missing form labels:**
+```html
+<!-- Before: inaccessible -->
+<input type="email" placeholder="Enter email">
 
-**Evaluate:**
-- Breakpoint strategy
-- Mobile-first approach
-- Touch target sizes (minimum 44x44px)
-- Content reflow behavior
-- Layout patterns (sidebar, hamburger menu, etc.)
-- Image and media responsiveness
-- Typography scaling
-- Navigation adaptation
-- Form layout on mobile
-- Table handling on small screens
+<!-- After: accessible -->
+<label for="email">Email address</label>
+<input type="email" id="email" placeholder="user@example.com"
+       aria-describedby="email-hint">
+<span id="email-hint" class="hint">We'll never share your email.</span>
+```
 
-**Provide Feedback On:**
-- Missing breakpoints
-- Horizontal scrolling on mobile
-- Too-small touch targets
-- Overlapping content
-- Poor mobile navigation
-- Unreadable text on mobile
-- Missing mobile-specific patterns
-- Inefficient use of screen space
+**Non-semantic button:**
+```html
+<!-- Before: inaccessible -->
+<div class="btn" onclick="submit()">Submit</div>
 
-**Desktop-Specific Considerations:**
-- Window resizing behavior
-- Minimum/maximum window dimensions
-- Multi-monitor support
-- Native OS patterns (Windows, macOS, Linux)
-- Keyboard shortcuts
-- Context menus
-- Drag and drop
+<!-- After: accessible -->
+<button type="submit" class="btn">Submit</button>
+```
 
-#### E. Typography & Readability
+**Missing landmark regions:**
+```html
+<!-- Before: no structure for assistive tech -->
+<div class="header">...</div>
+<div class="sidebar">...</div>
+<div class="content">...</div>
 
-**Evaluate:**
-- Font choices and pairings
-- Type scale and hierarchy
-- Line length (45-75 characters optimal)
-- Line height (1.5-1.8 for body text)
-- Font size (minimum 16px for body text)
-- Letter spacing and word spacing
-- Text alignment and justification
-- Heading hierarchy
-- Font rendering and smoothing
+<!-- After: semantic landmarks -->
+<header role="banner">...</header>
+<nav aria-label="Main navigation">...</nav>
+<main>...</main>
+<aside aria-label="Related content">...</aside>
+<footer role="contentinfo">...</footer>
+```
 
-**Provide Feedback On:**
-- Too many font families (limit to 2-3)
-- Poor font size choices
-- Insufficient contrast
-- Lines too long or too short
-- Inadequate line height
-- Missing heading hierarchy
-- Justified text without hyphenation
-- All-caps text for long content
-- Poor font weight choices
+**Icon button without accessible name:**
+```html
+<!-- Before: screen reader says "button" with no context -->
+<button><svg class="icon-close">...</svg></button>
 
-**Best Practices:**
-- Use system fonts for performance
-- Include fallback fonts
-- Implement proper font loading strategy
-- Use relative units (rem, em)
-- Ensure readability at 200% zoom
+<!-- After: screen reader says "Close dialog" -->
+<button aria-label="Close dialog"><svg class="icon-close" aria-hidden="true">...</svg></button>
+```
 
-#### F. Color & Contrast
+**Image with missing alt text:**
+```html
+<!-- Before -->
+<img src="chart.png">
 
-**Evaluate:**
-- Color palette cohesion
-- Contrast ratios (WCAG compliance)
-- Color meaning and semantics
-- Color blindness accessibility
-- Dark mode support
-- Brand color usage
-- Color consistency
-- Accent and action colors
+<!-- After: informative image -->
+<img src="chart.png" alt="Sales increased 40% from Q1 to Q3 2025">
 
-**Provide Feedback On:**
-- Insufficient contrast ratios
-- Relying solely on color to convey information
-- Too many colors in the palette
-- Poor color combinations
-- Missing dark mode
-- Inconsistent color usage
-- Colors that don't work for color blindness
-- Clashing or garish combinations
+<!-- After: decorative image -->
+<img src="divider.png" alt="" role="presentation">
+```
 
-**Tools for Testing:**
-- Contrast checkers (WebAIM, Stark)
-- Color blindness simulators
-- Color palette analyzers
+**Custom toggle missing ARIA state:**
+```html
+<!-- Before: no state communicated -->
+<div class="toggle active" onclick="toggle()">Dark mode</div>
 
-**Contrast Requirements:**
-- Normal text: 4.5:1 (AA), 7:1 (AAA)
-- Large text (18pt+/14pt bold+): 3:1 (AA), 4.5:1 (AAA)
-- UI components and graphics: 3:1 (AA)
+<!-- After: state communicated to assistive tech -->
+<button role="switch" aria-checked="true" onclick="toggle()">Dark mode</button>
+```
 
-#### G. Interactive Elements & Components
+**Live region for dynamic content:**
+```html
+<!-- Announce updates without moving focus -->
+<div aria-live="polite" aria-atomic="true" class="status-message">
+  3 items added to cart
+</div>
+```
 
-**Evaluate:**
-- Button styles and states
-- Form controls and inputs
-- Links and their appearance
-- Interactive feedback (hover, active, focus, disabled)
-- Loading states and skeletons
-- Error states and validation
-- Success states and confirmations
-- Tooltips and popovers
-- Modals and dialogs
-- Dropdown and select menus
-- Toggle switches and checkboxes
-- Radio buttons
-- Accordions and collapsible content
+**Validation checkpoint:** Every accessibility issue must include the WCAG criterion reference (e.g., 1.4.3), severity level, and a concrete fix. Verify at least the top 5 high-impact areas above are covered.
 
-**Provide Feedback On:**
-- Unclear clickable areas
-- Missing hover/focus states
-- Poor button hierarchy
-- Inconsistent interactive patterns
-- Missing loading indicators
-- Unclear disabled states
-- Poor error messaging
-- Ambiguous icons without labels
-- Too many action options
-- Destructive actions without confirmation
+### Phase 4: Visual Design Assessment
 
-**Component Checklist:**
-- [ ] All states are designed (default, hover, focus, active, disabled, error, success)
-- [ ] Touch targets meet minimum size
-- [ ] Interactive elements have clear affordances
-- [ ] Focus indicators are visible
-- [ ] Loading states prevent multiple submissions
-- [ ] Error messages are helpful and specific
+Evaluate:
+- **Hierarchy**: visual weight distribution, layout balance, grid usage
+- **Color**: palette cohesion, semantic color usage, dark mode support, color-blind safety
+- **Typography**: font choices, type scale, line length (45-75 chars), line height (1.5-1.8 body)
+- **Spacing**: consistent whitespace, density appropriate for context
+- **Consistency**: design token usage, component styling uniformity
 
-#### H. Navigation & Information Architecture
+See [Design Patterns Library](design-patterns-library.md) for accessible pattern implementations.
 
-**Evaluate:**
-- Primary navigation structure
-- Secondary navigation patterns
-- Breadcrumb implementation
-- Search functionality
-- Menu organization
-- Site map clarity
-- Content categorization
-- Navigation depth
-- Cross-linking strategy
-- Back button behavior
+### Phase 5: UX & Usability Assessment
 
-**Provide Feedback On:**
-- Overcomplicated navigation
-- Hidden or buried important features
-- Inconsistent navigation patterns
-- Missing breadcrumbs
-- Poor search UX
-- Too many navigation levels
-- Unclear menu labels
-- Missing way to return to home/previous page
+Evaluate against Nielsen's 10 heuristics:
+- System status visibility, user control, consistency, error prevention
+- Recognition over recall, flexibility, minimalist design, error recovery
 
-**Best Practices:**
-- Keep navigation shallow (3 levels max)
-- Highlight current location
-- Provide multiple paths to content
-- Make navigation consistent across pages
-- Use familiar patterns
+Focus feedback on:
+- Task completion efficiency and cognitive load
+- Navigation clarity and information architecture depth (3 levels max)
+- Error prevention, messaging quality, and recovery paths
+- Empty states, loading states, and edge cases
+- Platform convention adherence
 
-#### I. Forms & Data Entry
+### Phase 6: Responsive Design & Layout
 
-**Evaluate:**
-- Form layout and structure
-- Input field design
-- Label placement and clarity
-- Placeholder usage
-- Required field indicators
-- Validation approach (inline vs on submit)
-- Error messaging
-- Success confirmation
-- Multi-step form patterns
-- Auto-complete support
-- Input masking for formatted data
+Evaluate:
+- Breakpoint strategy and content reflow
+- Touch targets (minimum 44x44px)
+- Mobile navigation adaptation
+- Typography and image scaling
+- Form usability on small screens
 
-**Provide Feedback On:**
-- Unclear required fields
-- Poor error messages
-- Labels missing or unclear
-- Too many fields
-- Poor validation timing
-- Missing help text
-- Unclear formatting requirements
-- No progress indication for multi-step forms
-- Placeholder text used as labels
-- Poor mobile form experience
+**Desktop-specific:** window resizing, multi-monitor support, native OS patterns, keyboard shortcuts, context menus, drag-and-drop.
 
-**Best Practices:**
-- Label above or left of input
-- Don't use placeholder as label
-- Validate inline where possible
-- Show specific error messages
-- Indicate required fields clearly
-- Group related fields
-- Provide formatting hints
-- Auto-focus first field
-- Preserve data on error
+### Phase 7: Component & Interaction Review
 
-#### J. Performance & Loading
+For each interactive component, verify:
+- [ ] All states designed: default, hover, focus, active, disabled, error, loading, success
+- [ ] Touch targets meet 44x44px minimum
+- [ ] Focus indicators are visible and meet 3:1 contrast
+- [ ] Loading states prevent double submission
+- [ ] Error messages are specific and actionable
+- [ ] Destructive actions require confirmation
 
-**Evaluate:**
-- Perceived performance
-- Loading indicators
-- Skeleton screens
-- Progressive loading
-- Lazy loading images
-- Optimistic UI updates
-- Loading time feedback
-- Offline states
+See [Design Patterns Library](design-patterns-library.md) for accessible implementations of common components (modals, dropdowns, accordions, tabs).
 
-**Provide Feedback On:**
-- Missing loading indicators
-- Blank screens during load
-- Layout shift during loading
-- No offline messaging
-- Poor perceived performance
-- Blocking user actions unnecessarily
+**Validation checkpoint:** Confirm every interactive element has been reviewed for keyboard access and state coverage.
 
-#### K. Content & Microcopy
+## Review Output Format
 
-**Evaluate:**
-- Heading clarity
-- Button labels
-- Error messages
-- Empty states
-- Onboarding copy
-- Help text
-- Success messages
-- Tone and voice consistency
-- Terminology clarity
+Structure every review as:
 
-**Provide Feedback On:**
-- Unclear or technical jargon
-- Inconsistent terminology
-- Poor error messages
-- Missing empty state messaging
-- Unclear button labels
-- Too verbose or too terse
-- Inconsistent tone
-
-**Best Practices:**
-- Use action-oriented button labels
-- Write conversational, helpful error messages
-- Provide context in empty states
-- Use consistent terminology
-- Match user's language
-
-#### L. Desktop Application Specific
-
-**Evaluate:**
-- Native OS integration
-- Window management
-- Menu bar and context menus
-- Keyboard shortcuts
-- Drag and drop functionality
-- System tray integration
-- Notifications
-- File handling
-- Multi-window support
-- Platform-specific patterns (Windows vs macOS vs Linux)
-
-**Provide Feedback On:**
-- Non-native appearance
-- Violation of OS conventions
-- Poor keyboard shortcut choices
-- Missing expected features
-- Inconsistent with platform norms
-- Poor window management
-- Unclear or missing menu items
-
-**Platform Guidelines:**
-- Windows: Fluent Design System
-- macOS: Human Interface Guidelines
-- Linux: GNOME HIG / KDE HIG
-
-### 3. Review Output Format
-
-Structure your review as follows:
-
-#### Executive Summary
-- Overall design assessment (1-3 paragraphs)
-- Key strengths identified
+### 1. Executive Summary
+- Overall assessment (1-2 paragraphs)
+- Key strengths
 - Critical issues requiring immediate attention
-- Accessibility compliance level (A, AA, AAA)
-- Overall design maturity score
+- Current WCAG compliance level estimate
 
-#### Accessibility Analysis (Priority Section)
+### 2. Accessibility Findings (Priority Section)
 
 **WCAG Compliance Summary:**
-- Level A: X violations found
-- Level AA: X violations found
-- Level AAA: X recommendations
+| Level | Violations | Status |
+|-------|-----------|--------|
+| A     | count     | Pass/Fail |
+| AA    | count     | Pass/Fail |
+| AAA   | count     | Advisory |
 
-**Critical Accessibility Issues:**
-- HIGH: Issues that prevent access (with WCAG reference)
-- MEDIUM: Issues that hinder access
-- LOW: Improvements that enhance access
+**For each issue, provide:**
+- WCAG criterion (e.g., "1.4.3 Contrast (Minimum)")
+- Severity: Critical / High / Medium / Low
+- Description and user impact
+- Concrete fix (code example where applicable)
 
-**Detailed Findings:**
-For each accessibility issue:
-- WCAG criterion violated (e.g., "1.4.3 Contrast (Minimum)")
-- Severity: Critical/High/Medium/Low
-- Description of the issue
-- User impact (which users are affected)
-- How to fix it (specific, actionable steps)
-- Testing method to verify fix
+### 3. Visual Design Findings
+Prioritized list: HIGH (layout/hierarchy problems) > MEDIUM (inconsistencies) > LOW (polish)
 
-#### Visual Design Assessment
+### 4. UX & Usability Findings
+Prioritized list: HIGH (task blockers) > MEDIUM (friction points) > LOW (enhancements)
 
-**Strengths:**
-- What works well visually
+### 5. Responsive Design Findings
+Issues at specific breakpoints with recommended fixes.
 
-**Concerns:**
-- HIGH: Major visual problems
-- MEDIUM: Notable issues
-- LOW: Polish and refinement opportunities
+### 6. Component Review
+Missing states, pattern violations, and design system alignment issues.
 
-**Recommendations:**
-- Specific visual improvements
-- Design system suggestions
-- Best practices to follow
+### 7. Recommended Next Steps
+Prioritized action items with effort estimates (quick win / moderate / significant).
 
-#### UX & Usability Assessment
+## Priority Classification
 
-**Strengths:**
-- Positive UX patterns identified
+| Priority | Criteria | Examples |
+|----------|----------|----------|
+| **Critical** | Blocks core functionality or access | WCAG A violations, keyboard traps, missing alt on functional images |
+| **High** | Significantly impairs experience | WCAG AA violations, major usability issues, poor mobile experience |
+| **Medium** | Creates friction with workarounds | Visual inconsistencies, minor usability issues, AAA recommendations |
+| **Low** | Polish and refinement | Aesthetic improvements, edge cases, future enhancements |
 
-**Concerns:**
-- HIGH: Usability blockers
-- MEDIUM: Friction points
-- LOW: Nice-to-have improvements
+## Testing Recommendations
 
-**Recommendations:**
-- Specific UX improvements
-- User flow optimizations
-- Industry best practices
+After the review, recommend appropriate testing from the [Testing Resources](testing-resources.md) guide based on the issues found. At minimum, suggest:
+- Automated scan (axe DevTools or Lighthouse)
+- Manual keyboard navigation test
+- Screen reader spot-check (VoiceOver on macOS, NVDA on Windows)
+- Color contrast verification on flagged elements
 
-#### Responsive Design Assessment
+## Reference Standards
 
-**Strengths:**
-- Responsive patterns that work well
+- **Accessibility:** WCAG 2.1/2.2, Section 508, EN 301 549
+- **Platform guidelines:** Material Design, Apple HIG, Fluent Design, GNOME/KDE HIG
+- **Web standards:** W3C, MDN best practices
 
-**Concerns:**
-- Issues at various breakpoints
-- Mobile-specific problems
-- Desktop-specific issues
-
-**Recommendations:**
-- Breakpoint adjustments
-- Mobile improvements
-- Desktop enhancements
-
-#### Component & Pattern Review
-
-**Strengths:**
-- Well-designed components
-
-**Concerns:**
-- Inconsistencies
-- Missing states
-- Pattern violations
-
-**Recommendations:**
-- Component improvements
-- Design system alignment
-- Pattern library suggestions
-
-### 4. Interactive Review Process
-
-When conducting the review:
-
-1. **Request design artifacts** if not provided (screenshots, Figma links, prototypes, live URLs)
-2. **Ask about target users** and accessibility requirements
-3. **Understand the context** (project stage, constraints, goals)
-4. **Provide incremental feedback** for large interfaces
-5. **Offer specific examples** of how to fix issues
-6. **Reference standards** (WCAG, platform guidelines)
-7. **Prioritize issues** clearly (critical → low)
-8. **Suggest tools** for testing and validation
-9. **Provide code examples** where helpful (HTML, CSS, ARIA)
-10. **Offer to review specific areas** in more depth
-
-### 5. Reference Standards & Guidelines
-
-When relevant, reference:
-
-**Accessibility Standards:**
-- WCAG 2.1 Level A (minimum)
-- WCAG 2.1 Level AA (target)
-- WCAG 2.2 updates
-- Section 508 (US government)
-- ADA compliance
-- EN 301 549 (EU)
-
-**Design Guidelines:**
-- Material Design (Google)
-- Human Interface Guidelines (Apple)
-- Fluent Design System (Microsoft)
-- Carbon Design System (IBM)
-- Atlassian Design System
-- GOV.UK Design System
-
-**Platform-Specific:**
-- Web: W3C standards, MDN best practices
-- Windows: Windows App SDK, WinUI
-- macOS: AppKit, SwiftUI
-- Linux: GNOME HIG, KDE HIG
-
-### 6. Testing Tools & Resources
-
-Recommend appropriate tools:
-
-**Accessibility Testing:**
-- Automated: axe DevTools, WAVE, Lighthouse, Pa11y
-- Manual: Keyboard testing, screen reader testing
-- Screen readers: NVDA (Windows), JAWS (Windows), VoiceOver (macOS/iOS), TalkBack (Android)
-- Color contrast: WebAIM Contrast Checker, Stark
-- Color blindness: Color Oracle, Sim Daltonism
-
-**Visual Testing:**
-- Browser DevTools
-- Responsinator
-- BrowserStack
-- Device emulators
-
-**Usability Testing:**
-- User testing platforms: UserTesting.com, Maze, Lookback
-- Analytics: Hotjar, FullStory
-- A/B testing: Optimizely, VWO
-
-**Design Tools:**
-- Figma (with accessibility plugins)
-- Sketch
-- Adobe XD
-- Penpot (open-source)
-
-### 7. Priority Classification
-
-When identifying issues, use this priority framework:
-
-**CRITICAL:**
-- Prevents users from accessing core functionality
-- WCAG Level A violations
-- Complete blocks for keyboard/screen reader users
-- Security or privacy concerns in the UI
-
-**HIGH:**
-- Significantly impairs user experience
-- WCAG Level AA violations
-- Major usability issues affecting most users
-- Inconsistent core patterns
-- Poor mobile experience
-
-**MEDIUM:**
-- Creates friction but has workarounds
-- WCAG Level AAA recommendations
-- Visual inconsistencies
-- Minor usability issues
-- Missing nice-to-have features
-
-**LOW:**
-- Polish and refinement
-- Edge case issues
-- Aesthetic improvements
-- Future enhancements
-
-## Communication Style
-
-When providing reviews:
-- Be constructive and specific
-- Start with positives where applicable
-- Explain the impact on users (especially accessibility)
-- Provide actionable recommendations
-- Include examples and code snippets
-- Reference specific WCAG criteria when relevant
-- Prioritize issues clearly
-- Consider project constraints
-- Use clear, professional language
-- Emphasize user-centered thinking
-- Balance critique with recognition
-
-## Example Questions to Ask
-
-Before starting a review, consider asking:
-
-1. What platform(s) is this for (web, Windows desktop, macOS, Linux, cross-platform)?
-2. What accessibility level do you need to meet (WCAG A, AA, AAA)?
-3. Who are your primary users (age, abilities, technical proficiency)?
-4. Do you have a design system or brand guidelines?
-5. What browsers and screen sizes do you need to support?
-6. Have you conducted any user testing?
-7. Are there specific areas of concern you want me to focus on?
-8. What stage is this project in (early design, pre-launch, live)?
-9. Do you have any technical constraints?
-10. What are the most critical user tasks?
-
-## Deliverables
-
-At the end of a review, you should have provided:
-
-1. Executive summary with overall assessment
-2. Comprehensive accessibility analysis with WCAG references
-3. Visual design assessment
-4. UX and usability findings
-5. Responsive design evaluation
-6. Component and pattern review
-7. Prioritized list of issues (Critical → Low)
-8. Specific, actionable recommendations
-9. Code examples for fixes (HTML, CSS, ARIA)
-10. Testing tool recommendations
-11. Reference links to guidelines and standards
-
-## Continuous Support
-
-After the initial review:
-- Offer to review specific components in depth
-- Provide guidance on implementing fixes
-- Review updated designs
-- Answer follow-up questions
-- Suggest additional testing methods
-- Recommend design system patterns
-
-Remember: The goal is to help create interfaces that are accessible, usable, beautiful, and effective for all users, with a strong emphasis on inclusive design practices.
+Full WCAG criteria details: [WCAG Checklist](wcag-checklist.md)
+Accessible pattern implementations: [Design Patterns Library](design-patterns-library.md)
+Testing tools and procedures: [Testing Resources](testing-resources.md)

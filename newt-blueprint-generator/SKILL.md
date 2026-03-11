@@ -1,24 +1,11 @@
 ---
-name: "Newt Blueprint Generator"
+name: "newt-blueprint-generator"
 description: "Generate and validate Pangolin Newt blueprint configurations in YAML or Docker Labels format. Use when creating Pangolin resource configurations, proxy resources, client resources, authentication settings, or Docker Compose blueprints."
 ---
 
 # Newt Blueprint Generator
 
 Expert assistance for creating, validating, and managing Pangolin Newt blueprint configurations.
-
-## When to Use This Skill
-
-This skill should be triggered when:
-- Creating Pangolin blueprint configurations
-- Generating YAML configuration files for Newt
-- Creating Docker Compose files with Pangolin labels
-- Configuring proxy resources (HTTP, TCP, UDP)
-- Setting up client resources for Olm
-- Configuring authentication (SSO, basic auth, pincode, password)
-- Validating blueprint configurations
-- Troubleshooting blueprint validation errors
-- Converting between YAML and Docker Labels formats
 
 ## Overview
 
@@ -228,165 +215,41 @@ networks:
 - **Site Assignment**: If no site is specified, resource is assigned to the discovering Newt site
 - **Configuration Merging**: Configuration across containers is merged to form complete resource definitions
 
-## Configuration Properties Reference
+## Configuration Reference
 
-### Proxy Resources Properties
+For complete property tables, validation rules, constraints, and common error solutions, see [validation-reference.md](./validation-reference.md).
 
-| Property | Type | Required | Description | Constraints |
-|----------|------|----------|-------------|-------------|
-| `name` | string | Conditional | Human-readable name | Required unless targets-only |
-| `protocol` | string | Conditional | Protocol type (`http`, `tcp`, `udp`) | Required unless targets-only |
-| `full-domain` | string | HTTP only | Full domain name | Required for HTTP, must be unique |
-| `proxy-port` | number | TCP/UDP only | Port for raw TCP/UDP | Required for TCP/UDP, 1-65535, must be unique |
-| `ssl` | boolean | No | Enable SSL/TLS | - |
-| `enabled` | boolean | No | Whether resource is enabled | Defaults to `true` |
-| `host-header` | string | No | Custom Host header | - |
-| `tls-server-name` | string | No | SNI name for TLS | - |
-| `headers` | array | No | Custom headers | Each requires `name` and `value` (min 1 char) |
-| `rules` | array | No | Access control rules | See Rules section |
-| `auth` | object | HTTP only | Authentication config | See Authentication section |
-| `targets` | array | Yes | Target endpoints | See Targets section |
-
-### Target Configuration Properties
-
-| Property | Type | Required | Description | Constraints |
-|----------|------|----------|-------------|-------------|
-| `site` | string | No | Site identifier | - |
-| `hostname` | string | Yes | Target hostname or IP | - |
-| `port` | number | Yes | Target port | 1-65535 |
-| `method` | string | HTTP only | Protocol method (`http`, `https`, `h2c`) | Required for HTTP |
-| `enabled` | boolean | No | Whether target is enabled | Defaults to `true` |
-| `internal-port` | number | No | Internal port mapping | 1-65535 |
-| `path` | string | HTTP only | Path prefix, exact, or regex | - |
-| `path-match` | string | HTTP only | Path matching type (`prefix`, `exact`, `regex`) | - |
-
-### Authentication Properties
-
-**Not allowed on TCP/UDP resources.**
-
-| Property | Type | Required | Description | Constraints |
-|----------|------|----------|-------------|-------------|
-| `pincode` | number | No | 6-digit PIN | Must be exactly 6 digits |
-| `password` | string | No | Password for access | - |
-| `basic-auth` | object | No | Basic auth config | Requires `user` and `password` |
-| `sso-enabled` | boolean | No | Enable SSO | Defaults to `false` |
-| `sso-roles` | array | No | Allowed SSO roles | Cannot include "Admin" role |
-| `sso-users` | array | No | Allowed SSO user emails | Must be valid emails |
-| `whitelist-users` | array | No | Whitelisted user emails | Must be valid emails |
-
-### Rules Configuration Properties
-
-| Property | Type | Required | Description | Constraints |
-|----------|------|----------|-------------|-------------|
-| `action` | string | Yes | Rule action (`allow`, `deny`, `pass`) | - |
-| `match` | string | Yes | Match type (`cidr`, `path`, `ip`, `country`) | - |
-| `value` | string | Yes | Value to match | Format depends on match type |
-
-### Client Resources Properties
-
-| Property | Type | Required | Description | Constraints |
-|----------|------|----------|-------------|-------------|
-| `name` | string | Yes | Human-readable name | 2-100 characters |
-| `protocol` | string | Yes | Protocol type (`tcp`, `udp`) | - |
-| `proxy-port` | number | Yes | Port accessible to clients | 1-65535, must be unique |
-| `hostname` | string | Yes | Target hostname or IP | 1-255 characters |
-| `internal-port` | number | Yes | Port on target system | 1-65535 |
-| `site` | string | No | Site identifier | 2-100 characters |
-| `enabled` | boolean | No | Whether resource is enabled | Defaults to `true` |
-
-## Validation Rules and Constraints
-
-### Resource-Level Validations
-
-1. **Targets-Only Resources**: A resource can contain only `targets` field, making `name` and `protocol` optional
-2. **Protocol-Specific Requirements**:
-   - **HTTP Protocol**: Must have `full-domain` and all targets must have `method` field
-   - **TCP/UDP Protocol**: Must have `proxy-port` and targets must NOT have `method` field
-   - **TCP/UDP Protocol**: Cannot have `auth` configuration
-3. **Port Uniqueness**:
-   - `proxy-port` values must be unique within `proxy-resources`
-   - `proxy-port` values must be unique within `client-resources`
-   - Cross-validation between proxy and client resources is not enforced
-4. **Domain Uniqueness**: `full-domain` values must be unique across all proxy resources
-5. **Target Method Requirements**: When protocol is `http`, all non-null targets must specify a `method`
-
-## Common Validation Errors
-
-### "Admin role cannot be included in sso-roles"
-
-The `Admin` role is reserved and cannot be included in the `sso-roles` array.
-
-**Solution**: Remove "Admin" from the `sso-roles` array.
-
-### "Duplicate 'full-domain' values found"
-
-Each `full-domain` must be unique across all proxy resources.
-
-**Solution**: Use different subdomains or paths for multiple resources.
-
-### "Duplicate 'proxy-port' values found"
-
-Port numbers in `proxy-port` must be unique within their resource type.
-
-**Solution**: Assign unique port numbers within `proxy-resources` and `client-resources` separately.
-
-### "When protocol is 'http', all targets must have a 'method' field"
-
-All targets in HTTP proxy resources must specify the connection method.
-
-**Solution**: Add `method: http`, `method: https`, or `method: h2c` to all targets.
-
-### "When protocol is 'tcp' or 'udp', targets must not have a 'method' field"
-
-TCP and UDP targets should not include the `method` field.
-
-**Solution**: Remove the `method` field from TCP/UDP resource targets.
-
-### "When protocol is 'tcp' or 'udp', 'auth' must not be provided"
-
-Authentication is only supported for HTTP resources.
-
-**Solution**: Remove the `auth` section from TCP/UDP resources.
-
-### "Resource must either be targets-only or have both 'name' and 'protocol' fields"
-
-Resources must be either targets-only or complete resource definitions.
-
-**Solution**: Either provide only `targets` field, or include both `name` and `protocol` fields.
+Key constraints to remember:
+- **HTTP resources** require `full-domain` (unique) and `method` on all targets
+- **TCP/UDP resources** require `proxy-port` (unique); `method` and `auth` are NOT allowed
+- **Targets-only resources** omit `name` and `protocol`
+- **Authentication** is HTTP-only (SSO, basic auth, pincode, password)
 
 ## Workflow for Generating Blueprints
 
 When a user requests a Pangolin Newt blueprint configuration:
 
-1. **Gather Requirements**:
-   - Resource type (proxy or client)
-   - Protocol (HTTP, TCP, UDP)
-   - Domain or port requirements
-   - Target endpoints (hostname, port, site)
-   - Authentication needs (if HTTP)
-   - Access control rules (if any)
-   - Format preference (YAML or Docker Labels)
+1. **Gather Requirements**: Resource type (proxy/client), protocol, domain/port, targets, auth needs, format preference (YAML or Docker Labels).
 
-2. **Select Format**:
-   - Use **YAML** for standalone configurations or API deployment
-   - Use **Docker Labels** for containerized applications
+2. **Select Format**: Use **YAML** for standalone/API deployment. Use **Docker Labels** for containerized applications.
 
-3. **Validate Configuration**:
-   - Ensure protocol-specific requirements are met
-   - Check for unique `full-domain` (HTTP) or `proxy-port` (TCP/UDP)
-   - Verify authentication is only on HTTP resources
-   - Confirm all HTTP targets have `method` field
-   - Ensure TCP/UDP targets don't have `method` field
+3. **Generate Configuration**: Create well-structured YAML or Docker Compose with comments and kebab-case resource IDs.
 
-4. **Generate Configuration**:
-   - Create well-structured YAML or Docker Compose file
-   - Include helpful comments explaining each section
-   - Follow naming conventions (kebab-case for resource IDs)
+4. **Validate Before Deployment**:
+   - Lint the YAML syntax: `python -c "import yaml; yaml.safe_load(open('blueprint.yaml'))"`
+   - Dry-run with Newt: `newt --blueprint-file blueprint.yaml --dry-run`
+   - For Docker labels, verify syntax: `docker compose config`
+   - Check the [validation-reference.md](./validation-reference.md) checklist for protocol-specific rules
 
-5. **Provide Usage Instructions**:
-   - Explain how to apply the configuration (Newt CLI or API)
-   - Document any environment variables needed
-   - Include validation commands if applicable
+5. **Error Recovery**: If validation fails:
+   - Parse the error message (e.g., "Duplicate 'full-domain' values found")
+   - Refer to the [Common Validation Errors](./validation-reference.md#common-validation-errors) section for fix patterns
+   - Apply the fix, re-validate, and confirm resolution before deploying
+
+6. **Deploy and Verify**:
+   - Apply via CLI: `newt --blueprint-file blueprint.yaml <other-args>`
+   - Or via API: `POST /org/{orgId}/blueprint` with base64-encoded JSON body
+   - Confirm resources appear in Pangolin dashboard after deployment
 
 ## Best Practices
 
@@ -403,6 +266,8 @@ When a user requests a Pangolin Newt blueprint configuration:
 
 ## Resources
 
+- **Validation Reference**: [validation-reference.md](./validation-reference.md) — property tables, constraints, error solutions
+- **README**: [README.md](./README.md) — installation and usage documentation
 - **API Documentation**: https://api.pangolin.net/v1/docs/#/Organization/put_org__orgId__blueprint
 - **Python Example**: https://github.com/fosrl/pangolin/blob/dev/blueprint.py
 - **Official Docs**: https://docs.pangolin.net/manage/blueprints
@@ -484,12 +349,3 @@ proxy-resources:
         method: https
 ```
 
-## Communication Style
-
-When generating blueprints:
-- Ask clarifying questions if requirements are unclear
-- Explain validation errors in plain language
-- Provide complete, working examples
-- Include comments for complex configurations
-- Suggest security best practices proactively
-- Offer both YAML and Docker Labels formats when appropriate
