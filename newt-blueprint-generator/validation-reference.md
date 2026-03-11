@@ -60,6 +60,72 @@ When using targets-only:
 - `auth` configuration (authentication not supported)
 - `full-domain` (use `proxy-port` instead)
 
+## Configuration Properties
+
+### Proxy Resources Properties
+
+| Property | Type | Required | Description | Constraints |
+|----------|------|----------|-------------|-------------|
+| `name` | string | Conditional | Human-readable name | Required unless targets-only |
+| `protocol` | string | Conditional | Protocol type (`http`, `tcp`, `udp`) | Required unless targets-only |
+| `full-domain` | string | HTTP only | Full domain name | Required for HTTP, must be unique |
+| `proxy-port` | number | TCP/UDP only | Port for raw TCP/UDP | Required for TCP/UDP, 1-65535, must be unique |
+| `ssl` | boolean | No | Enable SSL/TLS | - |
+| `enabled` | boolean | No | Whether resource is enabled | Defaults to `true` |
+| `host-header` | string | No | Custom Host header | - |
+| `tls-server-name` | string | No | SNI name for TLS | - |
+| `headers` | array | No | Custom headers | Each requires `name` and `value` (min 1 char) |
+| `rules` | array | No | Access control rules | See Rules section |
+| `auth` | object | HTTP only | Authentication config | See Authentication section |
+| `targets` | array | Yes | Target endpoints | See Targets section |
+
+### Target Configuration Properties
+
+| Property | Type | Required | Description | Constraints |
+|----------|------|----------|-------------|-------------|
+| `site` | string | No | Site identifier | - |
+| `hostname` | string | Yes | Target hostname or IP | - |
+| `port` | number | Yes | Target port | 1-65535 |
+| `method` | string | HTTP only | Protocol method (`http`, `https`, `h2c`) | Required for HTTP |
+| `enabled` | boolean | No | Whether target is enabled | Defaults to `true` |
+| `internal-port` | number | No | Internal port mapping | 1-65535 |
+| `path` | string | HTTP only | Path prefix, exact, or regex | - |
+| `path-match` | string | HTTP only | Path matching type (`prefix`, `exact`, `regex`) | - |
+
+### Authentication Properties
+
+**Not allowed on TCP/UDP resources.**
+
+| Property | Type | Required | Description | Constraints |
+|----------|------|----------|-------------|-------------|
+| `pincode` | number | No | 6-digit PIN | Must be exactly 6 digits |
+| `password` | string | No | Password for access | - |
+| `basic-auth` | object | No | Basic auth config | Requires `user` and `password` |
+| `sso-enabled` | boolean | No | Enable SSO | Defaults to `false` |
+| `sso-roles` | array | No | Allowed SSO roles | Cannot include "Admin" role |
+| `sso-users` | array | No | Allowed SSO user emails | Must be valid emails |
+| `whitelist-users` | array | No | Whitelisted user emails | Must be valid emails |
+
+### Rules Configuration Properties
+
+| Property | Type | Required | Description | Constraints |
+|----------|------|----------|-------------|-------------|
+| `action` | string | Yes | Rule action (`allow`, `deny`, `pass`) | - |
+| `match` | string | Yes | Match type (`cidr`, `path`, `ip`, `country`) | - |
+| `value` | string | Yes | Value to match | Format depends on match type |
+
+### Client Resources Properties
+
+| Property | Type | Required | Description | Constraints |
+|----------|------|----------|-------------|-------------|
+| `name` | string | Yes | Human-readable name | 2-100 characters |
+| `protocol` | string | Yes | Protocol type (`tcp`, `udp`) | - |
+| `proxy-port` | number | Yes | Port accessible to clients | 1-65535, must be unique |
+| `hostname` | string | Yes | Target hostname or IP | 1-255 characters |
+| `internal-port` | number | Yes | Port on target system | 1-65535 |
+| `site` | string | No | Site identifier | 2-100 characters |
+| `enabled` | boolean | No | Whether resource is enabled | Defaults to `true` |
+
 ## Property Constraints
 
 ### Port Constraints
