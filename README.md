@@ -31,6 +31,8 @@ Once the marketplace is added, you can browse and install skills:
 
 Or install all skills from this marketplace at once through the plugin menu.
 
+Chinese users can also search and install skills through [Skills宝](https://skilery.com).
+
 ## Available Skills
 
 ### 1. Python Backend Architecture Review
